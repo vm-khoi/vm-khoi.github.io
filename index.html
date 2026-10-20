@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Lịch Sử 12 - Trắc Nghiệm</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --border-color: #e5e7eb;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --green: #16a34a;
+            --green-bg: #dcfce7;
+            --red: #dc2626;
+            --red-bg: #fee2e2;
+            --yellow: #d97706;
+            --orange: #ea580c;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --opt-hover: #f3f4f6;
+            --opt-bg: #f9fafb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --green: #22c55e;
+            --green-bg: #064e3b;
+            --red: #ef4444;
+            --red-bg: #7f1d1d;
+            --yellow: #f59e0b;
+            --orange: #f97316;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --opt-hover: #334155;
+            --opt-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        header {
+            max-width: 760px;
+            margin: 0 auto 16px auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header-titles h1 {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .header-titles span {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--opt-hover);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px var(--shadow);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .start-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .start-screen p {
+            color: var(--text-sub);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Game Screen Header */
+        .quiz-stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            background: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-item .lbl {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .stat-item .val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .stat-item .val.streak-active {
+            color: var(--orange);
+        }
+
+        /* Timer Elements */
+        .timer-container {
+            margin-bottom: 16px;
+        }
+
+        .timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+        }
+
+        .timer-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .timer-bar-fill {
+            height: 100%;
+            width: 100%;
+            background-color: var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        .question-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            white-space: pre-line;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            width: 100%;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: var(--opt-hover);
+        }
+
+        .prefix {
+            font-weight: 700;
+            color: var(--text-sub);
+            min-width: 20px;
+        }
+
+        /* Answer Feedback Rules */
+        .option-btn.correct-choice {
+            background-color: var(--green-bg) !important;
+            border-color: var(--green) !important;
+            color: var(--text-main) !important;
+            font-weight: 700 !important;
+        }
+
+        .option-btn.wrong-choice {
+            background-color: var(--red-bg) !important;
+            border-color: var(--red) !important;
+            color: var(--red) !important;
+            font-weight: 600 !important;
+            text-decoration: line-through;
+        }
+
+        /* Floating Score Popup Animation */
+        .score-popup {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--green);
+            pointer-events: none;
+            animation: popupAnim 0.8s ease-out forwards;
+            z-index: 10;
+        }
+
+        @keyframes popupAnim {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateY(-15px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            text-align: center;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px 10px;
+            border-radius: 8px;
+        }
+
+        .stat-card .val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background-color: var(--opt-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Review Section */
+        .review-section {
+            text-align: left;
+            margin-top: 24px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .review-group-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin: 18px 0 10px 0;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .title-wrong-group {
+            background-color: var(--red-bg);
+            color: var(--red);
+        }
+
+        .title-correct-group {
+            background-color: var(--green-bg);
+            color: var(--green);
+        }
+
+        .review-item {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .review-q {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .review-opt {
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin: 4px 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .review-opt.is-correct-green {
+            background-color: var(--green-bg);
+            border-color: var(--green);
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .review-opt.is-wrong-red {
+            background-color: var(--red-bg);
+            border-color: var(--red);
+            color: var(--red);
+            text-decoration: line-through;
+        }
+
+        .review-status {
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-timeout {
+            background-color: var(--red-bg);
+            color: var(--red);
+        }
+
+        .status-wrong {
+            background-color: var(--red-bg);
+            color: var(--red);
+        }
+
+        .status-correct {
+            background-color: var(--green-bg);
+            color: var(--green);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-titles">
+            <h1>Ôn Tập Lịch Sử 12</h1>
+            <span>Giữa Kỳ 1 (54 Câu)</span>
+        </div>
+        <button id="theme-btn" class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span id="theme-text">Dark</span>
+        </button>
+    </header>
+
+    <div class="container">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="card start-screen">
+            <h2>Bộ Câu Hỏi Ôn Tập Lịch Sử 12</h2>
+            <p>Xáo trộn câu hỏi, đáp án, tính điểm tốc độ (Kahoot/Quizizz style) & thời gian đếm ngược tự động cho từng câu (15s - 50s).</p>
+            <button class="btn" onclick="startGame()">Bắt Đầu Làm Bài</button>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="card hidden">
+            <div id="popup-layer"></div>
+
+            <div class="quiz-stats-bar">
+                <div class="stat-item">
+                    <span class="lbl">Câu hỏi</span>
+                    <span class="val"><span id="q-number">1</span>/<span id="q-total">54</span></span>
+                </div>
+                <div class="stat-item">
+                    <span class="lbl">Chuỗi Đúng</span>
+                    <span id="streak-display" class="val">🔥 0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="lbl">Tổng Điểm</span>
+                    <span id="score-display" class="val">0</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Timer -->
+            <div class="timer-container">
+                <div class="timer-header">
+                    <span>Thời gian</span>
+                    <span id="timer-text">0s</span>
+                </div>
+                <div class="timer-bar-bg">
+                    <div id="timer-bar" class="timer-bar-fill"></div>
+                </div>
+            </div>
+
+            <div id="question-text" class="question-title"></div>
+
+            <div id="options-container" class="options-list"></div>
+
+            <div class="quiz-footer">
+                <button id="next-btn" class="btn hidden" onclick="nextQuestion()">Câu Tiếp Theo &rarr;</button>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="card results-screen hidden">
+            <h2>Kết Quả Bảng Điểm</h2>
+
+            <div class="score-grid">
+                <div class="stat-card">
+                    <div class="label">Tổng Điểm</div>
+                    <div id="final-points" class="val">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Chính Xác</div>
+                    <div id="final-pct" class="val">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Đúng / Sai</div>
+                    <div id="final-count" class="val">0 / 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Tốc Độ TB</div>
+                    <div id="final-avg-time" class="val">0s/câu</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn" onclick="startGame()">Chơi Lại (Xáo Trộn Mới)</button>
+                <button class="btn btn-secondary" onclick="toggleReview()">Xem Chi Tiết Đáp Án</button>
+            </div>
+
+            <div id="review-container" class="review-section hidden">
+                <div id="review-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 54 QUESTIONS & ANSWERS FROM SOURCE
+        const sourceData = [
+            { id: 1, q: "Ngày 24-10 hằng năm được chọn là “Ngày Liên hợp quốc”, gắn liền với sự kiện lịch sử nào sau đây?", options: ["Liên hợp quốc thông qua “17 mục tiêu của Chương trình Nghị sự 2030”.", "Trung Quốc trở thành ủy viên thường trực Hội đồng Bảo an Liên hợp quốc.", "Hội nghị Thượng đỉnh Thiên niên kỉ của Liên hợp quốc được triệu tập.", "Hiến chương Liên hợp quốc chính thức có hiệu lực."], correctText: "Hiến chương Liên hợp quốc chính thức có hiệu lực." },
+            { id: 2, q: "Lực lượng Mũ nồi xanh (Blue Berets) của Liên hợp quốc thực hiện nhiệm vụ chính là gì?", options: ["Can thiệp quân sự vào các nước.", "Cứu trợ nhân đạo khi có thiên tai.", "Tham gia các hoạt động gìn giữ hòa bình.", "Áp đặt các biện pháp trừng phạt kinh tế."], correctText: "Tham gia các hoạt động gìn giữ hòa bình." },
+            { id: 3, q: "Mục tiêu phát triển bền vững (SDGs) được Liên hợp quốc thông qua vào năm 2015 bao gồm bao nhiêu mục tiêu cụ thể?", options: ["8 mục tiêu.", "10 mục tiêu.", "15 mục tiêu.", "17 mục tiêu."], correctText: "17 mục tiêu." },
+            { id: 4, q: "Tổ chức quốc tế được xem như tiền thân của Liên hợp quốc là", options: ["Hội Quốc liên.", "Liên minh châu Âu.", "khối Đồng minh.", "khối Hiệp ước"], correctText: "Hội Quốc liên." },
+            { id: 5, q: "Văn bản nào được kí kết năm 1942 là cơ sở cho việc hình thành Liên hợp quốc?", options: ["Hiến chương Liên hợp quốc.", "Tuyên ngôn Nhân quyền.", "Tuyên bố Liên hợp quốc.", "Tuyên ngôn độc lập."], correctText: "Tuyên bố Liên hợp quốc." },
+            { id: 6, q: "Quá trình thành lập tổ chức Liên hợp quốc được quyết định chủ yếu thông qua những hội nghị nào?", options: ["Hội nghị tại Oa-sinh-tơn (1942), Hội nghị Tê-hê-ran (1943) và Hội nghị I-an-ta (1945).", "Hội nghị Tê-hê-ran (1943), Hội nghị I-an-ta (1945) và Hội nghị Xan Phran-xi-xcô (1945).", "Hội nghị tại Mát-xcơ-va (1943), Hội nghị Tê-hê-ran (1943) và Hội nghị I-an-ta (1945).", "Hội nghị Tê-hê-ran (1943), Hội nghị I-an-ta (1945), Hội nghị tại Oa-sinh-tơn (1942)."], correctText: "Hội nghị tại Mát-xcơ-va (1943), Hội nghị Tê-hê-ran (1943) và Hội nghị I-an-ta (1945)." },
+            { id: 7, q: "Mục tiêu được chú trọng và là cơ sở để thực hiện các mục tiêu khác của Liên hợp quốc là", options: ["duy trì, mở rộng hợp tác về mọi mặt.", "thúc đẩy các mối quan hệ hữu nghị.", "sự hợp tác về an ninh - quốc phòng.", "duy trì hòa bình và an ninh thế giới."], correctText: "duy trì hòa bình và an ninh thế giới." },
+            { id: 8, q: "Ý nào sau đây không phải là nguyên tắc hoạt động được quy định trong Hiến chương Liên hợp quốc?", options: ["Bình đẳng về chủ quyền giữa các quốc gia.", "Tôn trọng toàn vẹn lãnh thổ và độc lập chính trị của tất cả các nước.", "Giải quyết các tranh chấp quốc tế bằng biện pháp hòa bình.", "Chung sống hòa bình và sự nhất trí giữa tất cả các thành viên trong Liên hợp quốc."], correctText: "Chung sống hòa bình và sự nhất trí giữa tất cả các thành viên trong Liên hợp quốc." },
+            { id: 9, q: "Liên hợp quốc có hoạt động nào sau đây để bảo đảm quyền con người?", options: ["Xây dựng và kí kết các văn bản, điều ước quốc tế về quyền con người.", "Can thiệp trực tiếp vào các nước nhằm thi hành triệt để quyền con người.", "Thành lập khối phòng thủ chung dựa trên cơ sở đồng thuận giữa các quốc gia.", "Xây dựng thể chế chính trị thống nhất cho các quốc gia thành viên."], correctText: "Xây dựng và kí kết các văn bản, điều ước quốc tế về quyền con người." },
+            { id: 10, q: "Ý nào không phản ánh đúng vai trò duy trì hòa bình, an ninh quốc tế của Liên hợp quốc?", options: ["Liên hợp quốc góp phần ngăn ngừa không để xảy ra một cuộc chiến tranh thế giới mới kể từ năm 1945 đến nay.", "Liên hợp quốc góp phần chấm dứt một số cuộc xung đột ở nhiều khu vực trên thế giới.", "Liên hợp quốc đã ban hành hệ thống các công ước quốc tế về giải trừ quân bị, chống chạy đua vũ trang giữa các nước.", "Liên hợp quốc là trụ cột quan trọng quyết định sự thành công của quá trình giành độc lập dân tộc ở các nước thuộc địa và phụ thuộc."], correctText: "Liên hợp quốc là trụ cột quan trọng quyết định sự thành công của quá trình giành độc lập dân tộc ở các nước thuộc địa và phụ thuộc." },
+            { id: 11, q: "Nội dung nào sau đây phản ánh đúng vai trò của tổ chức Liên hợp quốc trong việc duy trì hòa bình và an ninh thế giới?", options: ["Xây dựng, kí kết các điều ước quốc tế về quyền cơ bản của con người.", "Thiết lập liên minh quân sự ở nhiều quốc gia và khu vực trên thế giới.", "Hỗ trợ xóa đói, giảm nghèo, tạo cơ hội để phát triển văn hóa, xã hội.", "Soạn thảo và xây dựng hệ thống các công ước quốc tế về giải trừ quân bị."], correctText: "Soạn thảo và xây dựng hệ thống các công ước quốc tế về giải trừ quân bị." },
+            { id: 12, q: "Quá trình hình thành Liên hợp quốc có đặc điểm nào sau đây?", options: ["Được thành lập thông qua việc ký các hiệp ước hòa bình với nước bại trận.", "Có sự đồng tình, ủng hộ của tất cả các nước và vùng lãnh thổ trên thế giới.", "Liên Xô, Mỹ, Anh là những nước có vai trò quan trọng trong việc thành lập.", "Được thành lập trên cơ sở kế thừa nguyên vẹn cơ cấu của Hội Quốc Liên."], correctText: "Liên Xô, Mỹ, Anh là những nước có vai trò quan trọng trong việc thành lập." },
+            { id: 13, q: "Cuộc chiến tranh nào không phải là “sản phẩm” của Chiến tranh lạnh?", options: ["Chiến tranh Triều Tiên (1950 - 1953).", "Chiến tranh xâm lược Việt Nam của thực dân Pháp (1945 - 1954).", "Chiến tranh xâm lược Việt Nam của đế quốc Mỹ (1954 - 1975).", "Chiến tranh vùng Vịnh (1900-1991)."], correctText: "Chiến tranh vùng Vịnh (1900-1991)." },
+            { id: 14, q: "Nội dung nào sau đây không phản ánh đúng tác động của sự sụp đổ Trật tự hai cực I-an-ta đối với tình hình thế giới?", options: ["Trật tự thế giới mới dần hình thành theo xu thế đa cực.", "Vai trò của các cường quốc khác ngày càng gia tăng.", "Mỹ thiết lập thành công trật tự thế giới “đơn cực”.", "Mở ra chiều hướng giải quyết hòa bình các cuộc xung đột."], correctText: "Mỹ thiết lập thành công trật tự thế giới “đơn cực”." },
+            { id: 15, q: "Sự kiện lịch sử nào sau đây diễn ra trong giai đoạn tồn tại của Trật tự thế giới hai cực I-an-ta từ năm 1945 đến những năm 70 của thế kỉ XX?", options: ["Tổ chức Hiệp ước Vác-sa-va ra đời.", "Cu-ba tiến hành đổi mới toàn diện.", "Chủ nghĩa xã hội ở Đông Âu sụp đổ.", "Chiến tranh lạnh chấm dứt ở châu Âu."], correctText: "Tổ chức Hiệp ước Vác-sa-va ra đời." },
+            { id: 16, q: "Nguyên nhân nào sau đây dẫn đến sự sụp đổ của Trật tự thế giới hai cực I-an-ta?", options: ["Cuộc chạy đua vũ trang làm Mỹ và Liên Xô bị suy giảm thế mạnh kinh tế.", "Quân đội Liên Xô và lực lượng Đồng minh chiến thắng chủ nghĩa phát xít.", "Nhân dân tiến bộ các nước biểu tình phản đối Trật tự thế giới hai cực I-an-ta.", "Chủ nghĩa khủng bố đe dọa nền hoà bình, an ninh của thế giới."], correctText: "Cuộc chạy đua vũ trang làm Mỹ và Liên Xô bị suy giảm thế mạnh kinh tế." },
+            { id: 17, q: "Nhận định nào sau đây không đúng về Trật tự thế giới hai cực I-an-ta?", options: ["Phương thức quan hệ quốc tế lấy đối đầu chính trị - quân sự là chủ yếu.", "Trạng thái địa chính trị toàn cầu với hai trung tâm quyền lực chi phối.", "Đặc trưng nổi bật là thế giới có sự phân tuyến triệt để thành hai cực, hai phe đối lập nhau.", "Đặc trưng nổi bật là sự đơn phương chi phối thế giới của các nước tư bản thắng trận."], correctText: "Đặc trưng nổi bật là sự đơn phương chi phối thế giới của các nước tư bản thắng trận." },
+            { id: 18, q: "Sự kiện lịch sử nào sau đây diễn ra trong thời kì tồn tại của trật tự hai cực I-an-ta (1945-1991)?", options: ["Liên bang cộng hòa xã hội chủ nghĩa Xô viết được thành lập", "Việt Nam gia nhập Hiệp hội các quốc gia Đông Nam Á", "Các thế lực phát xít lên cầm quyền ở một số nước châu Âu", "Liên Xô và Mĩ thỏa thuận hạn chế vũ khí tiến công chiến lược"], correctText: "Liên Xô và Mĩ thỏa thuận hạn chế vũ khí tiến công chiến lược" },
+            { id: 19, q: "Một trong những điểm chung của các trật tự thế giới hình thành trong và sau Chiến tranh lạnh là", options: ["tất cả các quốc gia đều phụ thuộc vào Liên Xô và Mỹ.", "các cuộc chiến tranh, xung đột sắc tộc, tôn giáo vẫn diễn ra.", "trên thế giới ngày càng xuất hiện nhiều liên minh quân sự.", "xu thế đối thoại, hợp tác đã thường trực trong quan hệ quốc tế."], correctText: "các cuộc chiến tranh, xung đột sắc tộc, tôn giáo vẫn diễn ra." },
+            { id: 20, q: "Hội nghị I-an-ta đã thỏa thuận việc chiếm đóng ở nước Đức sau Chiến tranh thế giới thứ hai như thế nào?", options: ["Mỗi nước Liên Xô và Mỹ đóng quân ở một nửa lãnh thổ nước Đức.", "Liên Xô chiếm đóng ở Đông Đức, Mỹ chiếm đóng ở Tây Đức.", "Liên Xô đóng quân ở Đông Đức, Đông Béc-lin; Mỹ, Anh, Pháp đóng quân ở Tây Đức, Tây Béc-lin.", "Liên Xô chiếm đóng ở Đông Đức và Đông Béc-lin, Mỹ chiếm đóng ở Tây Đức và Tây Béc-lin."], correctText: "Liên Xô đóng quân ở Đông Đức, Đông Béc-lin; Mỹ, Anh, Pháp đóng quân ở Tây Đức, Tây Béc-lin." },
+            { id: 21, q: "Trật tự thế giới hai cực I-an-ta suy yếu và đi đến sụp đổ vào giai đoạn", options: ["từ đầu những năm 70 của thế kỉ XX đến năm 1991.", "từ đầu những năm 70 của thế kỉ XIX đến năm 1989.", "từ đầu những năm 60 của thế kỉ XX đến năm 1991.", "từ đầu những năm 70 của thế kỉ XX đến năm 1989."], correctText: "từ đầu những năm 70 của thế kỉ XX đến năm 1991." },
+            { id: 22, q: "Mục đích của xu thế phát triển lấy kinh tế làm trọng tâm là gì?", options: ["Thúc đẩy mạnh mẽ quá trình liên kết về kinh tế giữa các quốc gia.", "Gắn kết phát triển kinh tế với các lĩnh vực khác.", "Tăng cường sức mạnh, tiềm lực tổng thể của quốc gia.", "Tăng cường sức mạnh quân sự của quốc gia."], correctText: "Tăng cường sức mạnh, tiềm lực tổng thể của quốc gia." },
+            { id: 23, q: "Xu thế đa cực được hình thành vào thời kì nào?", options: ["Sau Chiến tranh thế giới thứ nhất.", "Sau Chiến tranh thế giới thứ hai.", "Sau Chiến tranh lạnh.", "Sau khi Mỹ và Nhật Bản kí Hiệp ước an ninh Mỹ - Nhật."], correctText: "Sau Chiến tranh lạnh." },
+            { id: 24, q: "Nội dung nào không phải là xu thế phát triển chính của thế giới sau Chiến tranh lạnh?", options: ["Xu thế phát triển hợp tác giữa các nước theo vị trí địa lí.", "Xu thế phát triển lấy kinh tế là trọng tâm.", "Xu thế toàn cầu hóa.", "Xu thế đối thoại, hợp tác trong quan hệ quốc tế."], correctText: "Xu thế phát triển hợp tác giữa các nước theo vị trí địa lí." },
+            { id: 25, q: "Nội dung nào sau đây phản ánh không đúng biểu hiện của xu thế đa cực trong quan hệ quốc tế hiện nay?", options: ["Sự suy giảm sức mạnh tương đối của Mỹ so với các cường quốc khác.", "Vai trò ngày càng gia tăng của các tổ chức kinh tế, tài chính quốc tế.", "Khủng hoảng kinh tế, chính trị diễn ra ở nhiều quốc gia, khu vực.", "Sự gia tăng sức mạnh, tầm ảnh hưởng và vị thế của các nước lớn."], correctText: "Khủng hoảng kinh tế, chính trị diễn ra ở nhiều quốc gia, khu vực." },
+            { id: 26, q: "Trong xu thế phát triển chung của thế giới hiện nay, thời cơ Việt Nam có thể tận dụng để xây dựng và phát triển đất nước là gì?", options: ["Không bị áp dụng luật chống bán phá giá.", "Sự ổn định tình hình chính trị trong nước.", "Mua được các bằng phát minh với giá rẻ.", "Thu hút vốn, tiếp thu thành tựu khoa học."], correctText: "Thu hút vốn, tiếp thu thành tựu khoa học." },
+            { id: 27, q: "Nội dung nào sau đây phản ánh đúng sự khác biệt giữa xu thế đa cực sau Chiến tranh lạnh với Trật tự thế giới hai cực I-an-ta?", options: ["Vai trò chi phối quan hệ quốc tế của các siêu cường bị suy giảm.", "Mọi tranh chấp đều được giải quyết bằng đối thoại hòa bình.", "Trật tự thế giới mới ổn định lâu dài, hầu như ít có biến động.", "Các quốc gia đều có sức mạnh và vai trò quốc tế ngang nhau."], correctText: "Vai trò chi phối quan hệ quốc tế của các siêu cường bị suy giảm." },
+            { id: 28, q: "Yếu tố nào sau đây là động lực quan trọng nhất thúc đẩy xu thế toàn cầu hóa?", options: ["Sự phát triển của cách mạng khoa học - công nghệ.", "Sự gia tăng nhanh chóng của dân số thế giới.", "Sự cạn kiệt của các nguồn tài nguyên thiên nhiên.", "Sự tan rã của hệ thống xã hội chủ nghĩa."], correctText: "Sự phát triển của cách mạng khoa học - công nghệ." },
+            { id: 29, q: "“Năm 2000, GDP của Mỹ gấp khoảng 12 lần của Trung Quốc, nhưng đến năm 2021 chỉ còn gấp khoảng 1,3 lần” (Sách giáo khoa Lịch sử 12, tr.20). Thông tin trên phản ánh đặc điểm gì trong xu thế đa cực hiện nay?", options: ["Trung Quốc đã vươn lên thành cường quốc kinh tế đứng đầu thế giới.", "Mâu thuẫn đối kháng giữa Mỹ và Trung Quốc trong xu thế đa cực .", "Mỹ mất vai trò chi phối quan hệ quốc tế trong xu thế đa cực.", "Sự suy giảm sức mạnh tương đối của Mỹ trong trật tự thế giới đa cực."], correctText: "Sự suy giảm sức mạnh tương đối của Mỹ trong trật tự thế giới đa cực." },
+            { id: 30, q: "Nội dung nào sau đây đúng khi nói về xu thế đa cực?", options: ["Chỉ có một cực trong quan hệ quốc tế.", "Nhiều cực, nhiều trung tâm trong quan hệ quốc tế.", "Tối đa hai cực đối lập, nhiều trung tâm trong quan hệ quốc tế.", "Nhiều cực, chi phối bởi hai cường quốc Liên Xô và Mỹ."], correctText: "Nhiều cực, nhiều trung tâm trong quan hệ quốc tế." },
+            { id: 31, q: "Quốc gia nào sau đây không thuộc nhóm năm nước sáng lập ASEAN?", options: ["Indonesia.", "Malaysia.", "Singapore.", "Brunei."], correctText: "Brunei." },
+            { id: 32, q: "Hiệp hội các quốc gia Đông Nam Á (ASEAN) được thành lập trong bối cảnh nào sau đây?", options: ["Các nước Đông Nam Á đã hoàn toàn ổn định về chính trị và kinh tế.", "Xu hướng khu vực hóa bắt đầu xuất hiện và ngày càng trở nên phổ biến.", "Trật tự hai cực Ianta đã hoàn toàn sụp đổ.", "Chiến tranh lạnh đã kết thúc trên phạm vi toàn thế giới."], correctText: "Xu hướng khu vực hóa bắt đầu xuất hiện và ngày càng trở nên phổ biến." },
+            { id: 33, q: "Nguyên nhân nào thúc đẩy các nước Đông Nam Á tăng cường hợp tác sau Chiến tranh thế giới thứ hai?", options: ["Nhu cầu bảo vệ độc lập và hạn chế ảnh hưởng của các nước lớn.", "Nhu cầu hợp tác phát triển kinh tế, xã hội và hạn chế ảnh hưởng của các nước lớn.", "Nhu cầu thiết lập cơ chế hợp tác khu vực nhằm thay thế vai trò của các nước lớn.", "Nhu cầu tăng cường liên kết khu vực để từng bước thống nhất về chính trị và kinh tế."], correctText: "Nhu cầu hợp tác phát triển kinh tế, xã hội và hạn chế ảnh hưởng của các nước lớn." },
+            { id: 34, q: "Một trong những mục đích thành lập ASEAN là", options: ["tăng cường hợp tác kinh tế, văn hóa, xã hội giữa các nước thành viên.", "thống nhất chính sách đối ngoại của tất cả các quốc gia Đông Nam Á.", "thành lập một nhà nước liên bang Đông Nam Á.", "xây dựng một liên minh quân sự thống nhất."], correctText: "tăng cường hợp tác kinh tế, văn hóa, xã hội giữa các nước thành viên." },
+            { id: 35, q: "Sự kiện Việt Nam gia nhập Hiệp hội các quốc gia Đông Nam Á (1995) có ý nghĩa nào sau đây?", options: ["Hoàn thành quá trình phát triển từ ASEAN 5 lên ASEAN 10.", "Mở đầu cho quá trình hình thành liên minh khu vực.", "Xóa bỏ được mọi mâu thuẫn giữa các nước Đông Nam Á.", "Thúc đẩy sự phát triển của quá trình liên kết khu vực."], correctText: "Thúc đẩy sự phát triển của quá trình liên kết khu vực." },
+            { id: 36, q: "Sự ra đời của Hiến chương ASEAN năm 2007 có ý nghĩa quan trọng nào sau đây đối với quá trình phát triển của ASEAN?", options: ["Góp phần hoàn thiện cơ cấu tổ chức và tăng cường hợp sự tác của ASEAN.", "Củng cố nền tảng ban đầu, xây dựng lòng tin và thúc đẩy hòa giải giữa các thành viên.", "Hoàn thành quá trình mở rộng ASEAN từ ASEAN 5 thành ASEAN 10.", "Đặt nền tảng trực tiếp cho việc thành lập Khu vực Mậu dịch tự do ASEAN."], correctText: "Góp phần hoàn thiện cơ cấu tổ chức và tăng cường hợp sự tác của ASEAN." },
+            { id: 37, q: "Các nước ASEAN đã kí kết văn kiện nào sau đây vào năm 2003?", options: ["Tuyên bố Bangkok.", "Tuyên bố Kuala Lumpur.", "Tuyên về Bali I.", "Tuyên bố Bali II."], correctText: "Tuyên bố Bali II." },
+            { id: 38, q: "Nội dung nào sau đây phản ánh đúng đặc điểm của ASEAN trong giai đoạn 1999-2015?", options: ["Hoàn thiện cơ cấu tổ chức, tăng cường hợp tác nội khối và ngoại khối.", "Xây dựng quan hệ chính trị ổn định, tạo điều kiện phát triển và hợp tác.", "Tập trung chủ yếu vào việc mở rộng từ ASEAN 5 thành ASEAN 10.", "Thành lập và xây dựng cộng đồng ASEAN."], correctText: "Hoàn thiện cơ cấu tổ chức, tăng cường hợp tác nội khối và ngoại khối." },
+            { id: 39, q: "ASEAN hướng tới xây dựng Đông Nam Á trở thành khu vực", options: ["bản sắc, thống nhất, thịnh vượng và hòa bình.", "hòa bình, tự do, thịnh vượng và thống nhất.", "trung lập, thống nhất, phát triển và thịnh vượng.", "tự do, bình đẳng, thịnh vượng và thống nhất."], correctText: "hòa bình, tự do, thịnh vượng và thống nhất." },
+            { id: 40, q: "Sắp xếp các giai đoạn phát triển của ASEAN theo trình tự thời gian:\n1. Hoàn thiện cơ cấu tổ chức, tăng cường hợp tác nội khối và ngoại khối.\n2. Xây dựng nền móng ban đầu cho hợp tác ASEAN.\n3. Thành lập và xây dựng Cộng đồng ASEAN.\n4. Xây dựng quan hệ chính trị ổn định, thúc đẩy hợp tác kinh tế.", options: ["2 - 4 - 1 - 3.", "4 - 2 - 1 - 3.", "2 - 1 - 4 - 3.", "1 - 2 - 4 - 3."], correctText: "2 - 4 - 1 - 3." },
+            { id: 41, q: "“Quá trình mở rộng ASEAN phù hợp với mong muốn, lợi ích của mỗi thành viên, đảm bảo hòa bình, ổn định của cả khu vực, đồng thời nâng cao vị thế của Hiệp hội trên trường quốc tế.” (Sách giáo khoa Lịch sử 12, tr.23). Từ thông tin trên, có thể rút ra nhận xét nào sau đây đúng nhất về quá trình mở rộng ASEAN?", options: ["Tạo điều kiện tăng cường liên kết giữa các thành viên, đồng thời nâng cao vai trò của ASEAN trên trường quốc tế.", "Chủ yếu đáp ứng lợi ích riêng của các thành viên, qua đó từng bước mở rộng ảnh hưởng của ASEAN trong khu vực.", "Góp phần kết hợp lợi ích của các thành viên với mục tiêu duy trì hòa bình, ổn định và nâng cao vị thế của ASEAN.", "Phản ánh xu hướng các quốc gia Đông Nam Á ưu tiên hợp tác để bảo đảm ổn định khu vực và thúc đẩy vị thế của Hiệp hội."], correctText: "Góp phần kết hợp lợi ích của các thành viên với mục tiêu duy trì hòa bình, ổn định và nâng cao vị thế của ASEAN." },
+            { id: 42, q: "Nội dung nào sau đây phản ánh đúng một mục đích của ASEAN khi thành lập?", options: ["Xây dựng liên minh quân sự khu vực.", "Tăng cường hợp tác kinh tế, văn hóa, xã hội.", "Thành lập chính phủ chung của các nước thành viên.", "Xóa bỏ sự khác biệt về chế độ chính trị giữa các nước."], correctText: "Tăng cường hợp tác kinh tế, văn hóa, xã hội." },
+            { id: 43, q: "Ý tưởng xây dựng Cộng đồng ASEAN được đề cập từ khi", options: ["ASEAN hoàn thành mở rộng thành viên.", "ASEAN được thành lập.", "Hiến chương ASEAN có hiệu lực.", "Cộng đồng ASEAN chính thức ra đời."], correctText: "ASEAN hoàn thành mở rộng thành viên." },
+            { id: 44, q: "Cơ sở pháp lí quan trọng để xây dựng Cộng đồng ASEAN là", options: ["Tuyên bố Bangkok.", "Tầm nhìn ASEAN 2020.", "Hiến chương ASEAN.", "Hiệp định Thân thiện và Hợp tác ở Đông Nam Á."], correctText: "Hiến chương ASEAN." },
+            { id: 45, q: "Việc Cộng đồng ASEAN chính thức thành lập năm 2015 có ý nghĩa chủ yếu nào sau đây?", options: ["Đánh dấu ASEAN trở thành một liên minh chính trị - quân sự.", "Đánh dấu bước phát triển mới của tiến trình liên kết khu vực.", "Chấm dứt hoàn toàn sự khác biệt giữa các nước thành viên.", "Tạo lập một thị trường chung hoàn toàn thống nhất."], correctText: "Đánh dấu bước phát triển mới của tiến trình liên kết khu vực." },
+            { id: 46, q: "Cộng đồng Chính trị - An ninh ASEAN có mục tiêu chủ yếu là gì?", options: ["Xây dựng môi trường hòa bình và an ninh trong khu vực.", "Hình thành đồng tiền chung của ASEAN.", "Thống nhất hệ thống chính trị của các nước thành viên.", "Xây dựng một lực lượng quân sự phòng thủ chung."], correctText: "Xây dựng môi trường hòa bình và an ninh trong khu vực." },
+            { id: 47, q: "Một trong những đặc điểm của Cộng đồng Kinh tế ASEAN là", options: ["thu hẹp phạm vi hợp tác kinh tế giữa các thành viên.", "tập trung chủ yếu vào hợp tác khoa học - công nghệ.", "tiếp nối và mở rộng các chương trình hợp tác kinh tế trước đây.", "xây dựng một hệ thống tiền tệ thống nhất trong khu vực."], correctText: "tiếp nối và mở rộng các chương trình hợp tác kinh tế trước đây." },
+            { id: 48, q: "Cộng đồng Văn hóa - Xã hội ASEAN có vai trò như thế nào đối với hai trụ cột còn lại?", options: ["Tạo nền tảng xã hội thúc đẩy hợp tác kinh tế và liên kết chính trị - an ninh.", "Là nhân tố gắn kết, tạo thuận lợi cho việc xây dựng hai trụ cột còn lại.", "Từng bước hình thành sự thống nhất về chính trị và kinh tế.", "Góp phần thu hẹp khoảng cách phát triển giữa các nước ASEAN."], correctText: "Là nhân tố gắn kết, tạo thuận lợi cho việc xây dựng hai trụ cột còn lại." },
+            { id: 49, q: "Nội dung nào sau đây là lĩnh vực hợp tác mới được nhấn mạnh trong định hướng Cộng đồng ASEAN sau năm 2025?", options: ["Chuyển đổi số và kinh tế xanh.", "Trao đổi văn hóa và xúc tiến thương mại.", "Thành lập quân đội chung và đồng tiền chung.", "Xây dựng chế độ chính trị thống nhất."], correctText: "Chuyển đổi số và kinh tế xanh." },
+            { id: 50, q: "Sau năm 2015, các nước ASEAN định hướng", options: ["tăng cường hợp tác trong lĩnh vực văn hóa - giáo dục.", "thúc đẩy quan hệ với các đối tác bên ngoài.", "củng cố và làm sâu sắc hơn các lĩnh vực hợp tác.", "hạn chế cạnh tranh giữa các nước ASEAN."], correctText: "củng cố và làm sâu sắc hơn các lĩnh vực hợp tác." },
+            { id: 51, q: "Nội dung nào sau đây không phải là thách thức từ bên ngoài đối với Cộng đồng ASEAN?", options: ["Cạnh tranh ảnh hưởng của các nước lớn.", "Diễn biến phức tạp của tình hình Biển Đông.", "Biến đổi khí hậu và ô nhiễm môi trường.", "Sự đa dạng về chế độ chính trị trong nội khối."], correctText: "Sự đa dạng về chế độ chính trị trong nội khối." },
+            { id: 52, q: "Trước những thách thức đặt ra, các nước ASEAN đã và đang", options: ["đẩy nhanh việc triển khai các kế hoạch đã đề ra.", "thu hẹp quá trình liên kết khu vực.", "tăng cường quan hệ với các đối tác bên ngoài.", "lấy chính trị - an ninh làm trọng tâm hợp tác."], correctText: "đẩy nhanh việc triển khai các kế hoạch đã đề ra." },
+            { id: 53, q: "Một trong những triển vọng của Cộng đồng ASEAN là", options: ["mức độ liên kết và hợp tác ngày càng sâu rộng.", "sự thống nhất hoàn toàn về chế độ chính trị.", "hình thành một nhà nước chung ở Đông Nam Á.", "chấm dứt sự khác biệt về trình độ phát triển."], correctText: "mức độ liên kết và hợp tác ngày càng sâu rộng." },
+            { id: 54, q: "Nội dung nào sau đây thể hiện rõ nhất triển vọng phát triển của Cộng đồng ASEAN trong những năm tới?", options: ["Tăng cường liên kết trên ba trụ cột và mở rộng quan hệ đối ngoại.", "Tập trung giải quyết các vấn đề chính trị nội bộ của từng quốc gia.", "Hạn chế hợp tác với các đối tác ngoài khu vực.", "Xóa bỏ sự khác biệt về chế độ chính trị giữa các nước."], correctText: "Tăng cường liên kết trên ba trụ cột và mở rộng quan hệ đối ngoại." }
+        ];
+
+        // THEME TOGGLE LOGIC
+        function initTheme() {
+            const savedTheme = localStorage.getItem('app-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('app-theme', next);
+            updateThemeButton(next);
+        }
+
+        function updateThemeButton(theme) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (theme === 'dark') {
+                icon.innerText = '☀️';
+                text.innerText = 'Light';
+            } else {
+                icon.innerText = '🌙';
+                text.innerText = 'Dark';
+            }
+        }
+
+        // TIME DURATION CALCULATION PER QUESTION (15s to 50s)
+        function calculateQuestionTime(qText, options) {
+            const totalText = qText + " " + options.join(" ");
+            const len = totalText.length;
+            if (len < 120) return 15;
+            if (len < 220) return 25;
+            if (len < 320) return 35;
+            return 50;
+        }
+
+        // GAME STATE
+        let questions = [];
+        let currentIndex = 0;
+        let totalPoints = 0;
+        let currentStreak = 0;
+        let userHistory = [];
+
+        // TIMER STATE
+        let timerInterval = null;
+        let timeTotal = 0;
+        let timeRemaining = 0;
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function startGame() {
+            clearInterval(timerInterval);
+
+            // Reshuffle questions & options every new game
+            const shuffledBank = shuffle(sourceData);
+
+            questions = shuffledBank.map(qObj => {
+                const shuffledOpts = shuffle(qObj.options);
+                const correctIdx = shuffledOpts.indexOf(qObj.correctText);
+                const duration = calculateQuestionTime(qObj.q, shuffledOpts);
+                return {
+                    id: qObj.id,
+                    q: qObj.q,
+                    options: shuffledOpts,
+                    correctIndex: correctIdx,
+                    correctText: qObj.correctText,
+                    timeLimit: duration
+                };
+            });
+
+            currentIndex = 0;
+            totalPoints = 0;
+            currentStreak = 0;
+            userHistory = [];
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+
+            document.getElementById('q-total').innerText = questions.length;
+            document.getElementById('score-display').innerText = '0';
+            updateStreakUI();
+
+            loadQuestion();
+        }
+
+        function updateStreakUI() {
+            const el = document.getElementById('streak-display');
+            el.innerText = `🔥 ${currentStreak}`;
+            if (currentStreak >= 2) {
+                el.classList.add('streak-active');
+            } else {
+                el.classList.remove('streak-active');
+            }
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+
+            const current = questions[currentIndex];
+            document.getElementById('q-number').innerText = currentIndex + 1;
+            document.getElementById('question-text').innerText = current.q;
+            document.getElementById('next-btn').classList.add('hidden');
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            current.options.forEach((optText, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.onclick = () => selectOption(i);
+                btn.innerHTML = `<span class="prefix">${prefixes[i]}.</span><span>${optText}</span>`;
+                container.appendChild(btn);
+            });
+
+            startTimer(current.timeLimit);
+        }
+
+        function startTimer(seconds) {
+            timeTotal = seconds;
+            timeRemaining = seconds;
+            updateTimerUI();
+
+            timerInterval = setInterval(() => {
+                timeRemaining -= 0.1;
+
+                if (timeRemaining <= 0) {
+                    timeRemaining = 0;
+                    updateTimerUI();
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                } else {
+                    updateTimerUI();
+                }
+            }, 100);
+        }
+
+        function updateTimerUI() {
+            const pct = Math.max(0, (timeRemaining / timeTotal) * 100);
+            const timerBar = document.getElementById('timer-bar');
+            timerBar.style.width = pct + '%';
+
+            const secsLeft = Math.ceil(timeRemaining);
+            document.getElementById('timer-text').innerText = secsLeft + 's';
+
+            if (pct > 50) {
+                timerBar.style.backgroundColor = 'var(--primary)';
+            } else if (pct > 20) {
+                timerBar.style.backgroundColor = 'var(--yellow)';
+            } else {
+                timerBar.style.backgroundColor = 'var(--red)';
+            }
+        }
+
+        function showScorePopup(earned, streakBonus) {
+            const pop = document.createElement('div');
+            pop.className = 'score-popup';
+            let txt = `+${earned} PTS`;
+            if (streakBonus > 0) {
+                txt += ` (🔥+${streakBonus})`;
+            }
+            pop.innerText = txt;
+            document.getElementById('popup-layer').appendChild(pop);
+            setTimeout(() => pop.remove(), 850);
+        }
+
+        function handleTimeout() {
+            const current = questions[currentIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+
+            buttons.forEach(btn => btn.disabled = true);
+
+            // Timeout = Streak broken
+            currentStreak = 0;
+            updateStreakUI();
+
+            // Highlight green correct answer
+            buttons[current.correctIndex].classList.add('correct-choice');
+
+            userHistory.push({
+                questionNumber: currentIndex + 1,
+                question: current.q,
+                options: current.options,
+                selectedIdx: -1,
+                correctIndex: current.correctIndex,
+                isCorrect: false,
+                isTimeout: true,
+                timeSpent: timeTotal,
+                pointsEarned: 0
+            });
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function selectOption(selectedIdx) {
+            clearInterval(timerInterval);
+
+            const current = questions[currentIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            const timeSpent = Math.max(0.1, timeTotal - timeRemaining);
+            const isCorrect = selectedIdx === current.correctIndex;
+            let earnedPoints = 0;
+            let streakBonus = 0;
+
+            if (isCorrect) {
+                // QUIZIZZ/KAHOOT POINT FORMULA: Base 1000 + Speed Ratio + Streak Bonus
+                const baseMax = 1000;
+                const ratio = Math.max(0, timeRemaining / timeTotal);
+                const rawSpeedPoints = Math.round(baseMax * ratio);
+                
+                // Ensure min 500 points for correct answer
+                const speedPoints = Math.max(500, rawSpeedPoints);
+
+                currentStreak++;
+                streakBonus = (currentStreak > 1) ? (currentStreak - 1) * 100 : 0;
+                earnedPoints = speedPoints + streakBonus;
+
+                totalPoints += earnedPoints;
+                document.getElementById('score-display').innerText = totalPoints.toLocaleString();
+
+                buttons[selectedIdx].classList.add('correct-choice');
+                showScorePopup(speedPoints, streakBonus);
+            } else {
+                currentStreak = 0;
+                buttons[selectedIdx].classList.add('wrong-choice');
+                buttons[current.correctIndex].classList.add('correct-choice');
+            }
+
+            updateStreakUI();
+
+            userHistory.push({
+                questionNumber: currentIndex + 1,
+                question: current.q,
+                options: current.options,
+                selectedIdx: selectedIdx,
+                correctIndex: current.correctIndex,
+                isCorrect: isCorrect,
+                isTimeout: false,
+                timeSpent: timeSpent,
+                pointsEarned: earnedPoints
+            });
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const total = questions.length;
+            const correctCount = userHistory.filter(h => h.isCorrect).length;
+            const wrongCount = total - correctCount;
+            const pct = ((correctCount / total) * 100).toFixed(1);
+
+            const totalTimeSpent = userHistory.reduce((sum, h) => sum + h.timeSpent, 0);
+            const avgTime = (totalTimeSpent / total).toFixed(1);
+
+            document.getElementById('final-points').innerText = totalPoints.toLocaleString();
+            document.getElementById('final-pct').innerText = `${pct}%`;
+            document.getElementById('final-count').innerText = `${correctCount} / ${wrongCount}`;
+            document.getElementById('final-avg-time').innerText = `${avgTime}s`;
+
+            renderSortedReview();
+        }
+
+        // END-GAME SUMMARY: SORTED SO WRONG QUESTIONS ARE AT THE TOP
+        function renderSortedReview() {
+            const container = document.getElementById('review-list');
+            container.innerHTML = '';
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            // Split into Wrong/Timeout group and Correct group
+            const wrongGroup = userHistory.filter(h => !h.isCorrect);
+            const correctGroup = userHistory.filter(h => h.isCorrect);
+
+            // Group 1: Incorrect / Timed out Questions (TOP)
+            if (wrongGroup.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'review-group-title title-wrong-group';
+                header.innerText = `⚠️ CẦN ÔN LẠI (${wrongGroup.length} câu sai / hết giờ)`;
+                container.appendChild(header);
+
+                wrongGroup.forEach(item => {
+                    container.appendChild(createReviewCard(item, prefixes));
+                });
+            }
+
+            // Group 2: Correct Questions (BELOW)
+            if (correctGroup.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'review-group-title title-correct-group';
+                header.innerText = `✅ CÂU ĐÃ TRẢ LỜI ĐÚNG (${correctGroup.length} câu)`;
+                container.appendChild(header);
+
+                correctGroup.forEach(item => {
+                    container.appendChild(createReviewCard(item, prefixes));
+                });
+            }
+        }
+
+        function createReviewCard(item, prefixes) {
+            const div = document.createElement('div');
+            div.className = 'review-item';
+
+            let statusBadge = "";
+            if (item.isTimeout) {
+                statusBadge = `<span class="review-status status-timeout">Hết Giờ</span>`;
+            } else if (item.isCorrect) {
+                statusBadge = `<span class="review-status status-correct">Đúng (+${item.pointsEarned} pt)</span>`;
+            } else {
+                statusBadge = `<span class="review-status status-wrong">Sai</span>`;
+            }
+
+            let optionsHtml = item.options.map((opt, oIdx) => {
+                const isCorrect = oIdx === item.correctIndex;
+                const isChosen = oIdx === item.selectedIdx;
+
+                let classes = "review-opt";
+                let label = "";
+
+                if (isCorrect) {
+                    classes += " is-correct-green";
+                    label = " (Đáp án đúng)";
+                } else if (isChosen) {
+                    classes += " is-wrong-red";
+                    label = " (Bạn chọn sai)";
+                }
+
+                return `<div class="${classes}">${prefixes[oIdx]}. ${opt}${label}</div>`;
+            }).join('');
+
+            div.innerHTML = `
+                <div>${statusBadge}</div>
+                <div class="review-q">Câu ${item.questionNumber}: ${item.question}</div>
+                ${optionsHtml}
+            `;
+            return div;
+        }
+
+        function toggleReview() {
+            const rev = document.getElementById('review-container');
+            rev.classList.toggle('hidden');
+        }
+
+        // Initialize theme on load
+        initTheme();
+    </script>
+</body>
+</html>
