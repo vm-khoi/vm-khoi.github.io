@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Tin Học 12 - Bài 1, Bài 2, Bài 3</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --border-color: #e5e7eb;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --green: #16a34a;
+            --green-bg: #dcfce7;
+            --red: #dc2626;
+            --red-bg: #fee2e2;
+            --yellow: #d97706;
+            --orange: #ea580c;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --opt-hover: #f3f4f6;
+            --opt-bg: #f9fafb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --green: #22c55e;
+            --green-bg: #064e3b;
+            --red: #ef4444;
+            --red-bg: #7f1d1d;
+            --yellow: #f59e0b;
+            --orange: #f97316;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --opt-hover: #334155;
+            --opt-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        header {
+            max-width: 760px;
+            margin: 0 auto 16px auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header-titles h1 {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .header-titles span {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--opt-hover);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px var(--shadow);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .start-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .start-screen p {
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* LESSON SELECTION STYLES */
+        .lesson-select-group {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .lesson-select-group label {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .lesson-select {
+            background-color: var(--opt-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .quiz-stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            background: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-item .lbl {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .stat-item .val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .stat-item .val.streak-active {
+            color: var(--orange);
+        }
+
+        .timer-container {
+            margin-bottom: 16px;
+        }
+
+        .timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+        }
+
+        .timer-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .timer-bar-fill {
+            height: 100%;
+            width: 100%;
+            background-color: var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        .question-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            white-space: pre-line;
+        }
+
+        .question-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: var(--primary);
+            color: #fff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            width: 100%;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: var(--opt-hover);
+        }
+
+        .prefix {
+            font-weight: 700;
+            color: var(--text-sub);
+            min-width: 20px;
+        }
+
+        /* TRUE / FALSE FORMAT DESIGN */
+        .tf-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tf-row {
+            background: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tf-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .tf-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .tf-btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tf-btn.selected-true {
+            background-color: var(--green-bg);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .tf-btn.selected-false {
+            background-color: var(--red-bg);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .tf-row.correct-sub {
+            border-color: var(--green);
+            background-color: var(--green-bg);
+        }
+
+        .tf-row.wrong-sub {
+            border-color: var(--red);
+            background-color: var(--red-bg);
+        }
+
+        .option-btn.correct-choice {
+            background-color: var(--green-bg) !important;
+            border-color: var(--green) !important;
+            color: var(--text-main) !important;
+            font-weight: 700 !important;
+        }
+
+        .option-btn.wrong-choice {
+            background-color: var(--red-bg) !important;
+            border-color: var(--red) !important;
+            color: var(--red) !important;
+            font-weight: 600 !important;
+            text-decoration: line-through;
+        }
+
+        .score-popup {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--green);
+            pointer-events: none;
+            animation: popupAnim 0.8s ease-out forwards;
+            z-index: 10;
+        }
+
+        @keyframes popupAnim {
+            0% { opacity: 0; transform: translateY(0) scale(0.8); }
+            50% { opacity: 1; transform: translateY(-15px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(1); }
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .results-screen {
+            text-align: center;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px 10px;
+            border-radius: 8px;
+        }
+
+        .stat-card .val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background-color: var(--opt-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .review-section {
+            text-align: left;
+            margin-top: 24px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .review-group-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin: 18px 0 10px 0;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .title-wrong-group {
+            background-color: var(--red-bg);
+            color: var(--red);
+        }
+
+        .title-correct-group {
+            background-color: var(--green-bg);
+            color: var(--green);
+        }
+
+        .review-item {
+            background-color: var(--opt-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .review-q {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .review-opt {
+            font-size: 0.9rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin: 4px 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .review-opt.is-correct-green {
+            background-color: var(--green-bg);
+            border-color: var(--green);
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .review-opt.is-wrong-red {
+            background-color: var(--red-bg);
+            border-color: var(--red);
+            color: var(--red);
+            text-decoration: line-through;
+        }
+
+        .review-status {
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-timeout, .status-wrong {
+            background-color: var(--red-bg);
+            color: var(--red);
+        }
+
+        .status-correct {
+            background-color: var(--green-bg);
+            color: var(--green);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-titles">
+            <h1>Ôn Tập Tin Học 12</h1>
+            <span>Bài 1, Bài 2, Bài 3</span>
+        </div>
+        <button id="theme-btn" class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span id="theme-text">Dark</span>
+        </button>
+    </header>
+
+    <div class="container">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="card start-screen">
+            <h2>Bộ Câu Hỏi Ôn Tập Tin Học 12</h2>
+            <p>Chọn bài học để bắt đầu kiểm tra Trắc nghiệm 4 lựa chọn & Đúng/Sai:</p>
+
+            <div class="lesson-select-group">
+                <label for="lesson-choice">Chọn Bài Học Ôn Tập:</label>
+                <select id="lesson-choice" class="lesson-select">
+                    <option value="b1">Bài 1 & 2: Trí tuệ nhân tạo</option>
+                    <option value="b2">Bài 3: Thiết bị mạng</option>
+                    <option value="b3">Ôn tập Tổng hợp (1)</option>
+                    <option value="b4">Ôn tập Tổng hợp (2)</option>
+                    <option value="all">Ôn tập Tổng hợp TẤT CẢ</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="startGame()">Bắt Đầu Làm Bài</button>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="card hidden">
+            <div id="popup-layer"></div>
+
+            <div class="quiz-stats-bar">
+                <div class="stat-item">
+                    <span class="lbl">Câu hỏi</span>
+                    <span class="val"><span id="q-number">1</span>/<span id="q-total">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <span class="lbl">Chuỗi Đúng</span>
+                    <span id="streak-display" class="val">🔥 0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="lbl">Tổng Điểm</span>
+                    <span id="score-display" class="val">0</span>
+                </div>
+            </div>
+
+            <!-- Timer -->
+            <div class="timer-container">
+                <div class="timer-header">
+                    <span>Thời gian</span>
+                    <span id="timer-text">0s</span>
+                </div>
+                <div class="timer-bar-bg">
+                    <div id="timer-bar" class="timer-bar-fill"></div>
+                </div>
+            </div>
+
+            <div id="question-tag" class="question-tag">Trắc nghiệm</div>
+            <div id="question-text" class="question-title"></div>
+
+            <!-- MCQ Container -->
+            <div id="options-container" class="options-list"></div>
+
+            <!-- True/False Container -->
+            <div id="tf-container" class="tf-container hidden"></div>
+
+            <div class="quiz-footer">
+                <button id="submit-tf-btn" class="btn hidden" onclick="submitTFAnswer()">Xác Nhận Đáp Án</button>
+                <button id="next-btn" class="btn hidden" onclick="nextQuestion()">Câu Tiếp Theo &rarr;</button>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="card results-screen hidden">
+            <h2>Kết Quả Bảng Điểm</h2>
+
+            <div class="score-grid">
+                <div class="stat-card">
+                    <div class="label">Tổng Điểm</div>
+                    <div id="final-points" class="val">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Chính Xác</div>
+                    <div id="final-pct" class="val">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Đúng / Sai</div>
+                    <div id="final-count" class="val">0 / 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Tốc Độ TB</div>
+                    <div id="final-avg-time" class="val">0s/câu</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn" onclick="showStartScreen()">Đổi Bài / Chơi Lại</button>
+                <button class="btn btn-secondary" onclick="toggleReview()">Xem Chi Tiết Đáp Án</button>
+            </div>
+
+            <div id="review-container" class="review-section hidden">
+                <div id="review-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // QUESTION BANK 1: LESSON 1 (BÀI 1)
+        const bankLesson1 = [
+            {
+                type: "mcq",
+                id: 1,
+                q: "Hệ thống khuyến nghị tích hợp trên YouTube là ví dụ về đặc trưng nào của AI?",
+                options: [
+                    "Khả năng nhận thức.",
+                    "Khả năng học.",
+                    "Khả năng hiểu ngôn ngữ.",
+                    "Khả năng giải quyết vấn đề."
+                ],
+                correctText: "Khả năng học."
+            },
+            {
+                type: "mcq",
+                id: 2,
+                q: "ChatGPT được phát triển bởi",
+                options: ["Meta.", "OpenAI.", "Microsoft.", "Apple."],
+                correctText: "OpenAI."
+            },
+            {
+                type: "mcq",
+                id: 3,
+                q: "Có thể chia AI thành mấy loại chính theo chức năng?",
+                options: ["2.", "3.", "5.", "4."],
+                correctText: "2."
+            },
+            {
+                type: "mcq",
+                id: 4,
+                q: "Một thành tựu của xử lí ngôn ngữ tự nhiên và thị giác máy tính là",
+                options: [
+                    "Hệ thống lắp ráp tự động.",
+                    "Hệ thống tưới tiêu tự động.",
+                    "Hệ thống nhận dạng hình ảnh và video.",
+                    "Hệ thống phân tích dữ liệu."
+                ],
+                correctText: "Hệ thống nhận dạng hình ảnh và video."
+            },
+            {
+                type: "mcq",
+                id: 5,
+                q: "Vì sao lại nói sự phát triển của AI kéo theo rủi ro về an ninh, an toàn?",
+                options: [
+                    "Nhiều ứng dụng AI hoạt động dựa vào việc thu thập một lượng lớn dữ liệu cá nhân, điều này làm tăng mối lo ngại về quyền riêng tư có khả năng bị lạm dụng.",
+                    "Phần lớn các ứng dụng AI hiện nay đều là các “hộp đen”, gây khó khăn cho việc hiểu các quyết định được đưa ra như thế nào, dẫn đến việc thiếu trách nhiệm giải trình để đảm bảo tính minh bạch.",
+                    "AI có khả năng tự động hoá nhiều công việc, dẫn đến tình trạng thất nghiệp và tạo nên nhiều nguy cơ cho sự phát triển xã hội.",
+                    "Nhiều ứng dụng AI được xây dựng và triển khai trực tuyến nên có thể bị xâm nhập hoặc tấn công thay đổi dữ liệu và mô hình dẫn đến những quyết định không chính xác do AI đưa ra."
+                ],
+                correctText: "Nhiều ứng dụng AI được xây dựng và triển khai trực tuyến nên có thể bị xâm nhập hoặc tấn công thay đổi dữ liệu và mô hình dẫn đến những quyết định không chính xác do AI đưa ra."
+            },
+            {
+                type: "mcq",
+                id: 6,
+                q: "Sự phát triển của AI mang lại lợi ích như thế nào cho lĩnh vực giáo dục?",
+                options: [
+                    "AI có thể giúp người nông dân tối ưu hoá quy trình chăm sóc vật nuôi và cây trồng.",
+                    "AI được sử dụng để phát triển các phương tiện tự lái, quản lí giao thông thông minh và định tuyến phương tiện vận tải.",
+                    "AI hỗ trợ tự động hoá cập nhật chứng từ, hoá đơn vào cơ sở dữ liệu của ngân hàng.",
+                    "Các trợ lí ảo học tập dựa trên AI có thể hỗ trợ học sinh và giáo viên bằng cách trả lời câu hỏi, cung cấp hướng dẫn và tài liệu học tập."
+                ],
+                correctText: "Các trợ lí ảo học tập dựa trên AI có thể hỗ trợ học sinh và giáo viên bằng cách trả lời câu hỏi, cung cấp hướng dẫn và tài liệu học tập."
+            },
+            {
+                type: "mcq",
+                id: 7,
+                q: "AI có ảnh hưởng như thế nào tới lĩnh vực khoa học xã hội và nhân văn?",
+                options: [
+                    "AI được sử dụng để mô phỏng và mô hình hoá nhiều hiện tượng xã hội và nhân học.",
+                    "AI giúp tự động hoá nhiều quá trình, từ chế tạo, lắp ráp, kiểm tra chất lượng đến quản lí chuỗi cung ứng.",
+                    "Với sự phát triển của AI, đặc biệt là Học máy, nhiều hệ chuyên gia đã có khả năng tự học từ dữ liệu để tự hình thành các luật tri thức dựa trên dữ liệu.",
+                    "AI được sử dụng để cải thiện chất lượng hình ảnh y tế."
+                ],
+                correctText: "AI được sử dụng để mô phỏng và mô hình hoá nhiều hiện tượng xã hội và nhân học."
+            },
+            {
+                type: "mcq",
+                id: 8,
+                q: "MYCIN là hệ chuyên gia trong lĩnh vực nào?",
+                options: ["Giao thông.", "Giáo dục.", "Y học.", "Hoá học."],
+                correctText: "Y học."
+            },
+            {
+                type: "mcq",
+                id: 9,
+                q: "Sự kết hợp IoT và AI (AIoT) giúp ích cho các nhà khoa học như thế nào?",
+                options: [
+                    "Giúp giám sát môi trường tự nhiên và theo dõi tình hình biến đổi khí hậu.",
+                    "Hỗ trợ quyết định đầu tư, phát hiện và ngăn chặn gian lận, nâng cao trải nghiệm khách hàng trong lĩnh vực tài chính, ngân hàng.",
+                    "Cải thiện hiệu suất, hiệu quả của các lĩnh vực sản xuất.",
+                    "Phát triển các nền tảng học trực tuyến thông minh."
+                ],
+                correctText: "Giúp giám sát môi trường tự nhiên và theo dõi tình hình biến đổi khí hậu."
+            },
+            {
+                type: "mcq",
+                id: 10,
+                q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một phần mềm AI giúp tạo hình ảnh dựa trên các miêu tả văn bản hoặc lời nói?",
+                options: ["Rytr.", "Whisper.", "Codex.", "Midjourney."],
+                correctText: "Midjourney."
+            },
+            {
+                type: "mcq",
+                id: 11,
+                q: "Hệ thống nào dưới đây không được coi là hệ thống có ứng dụng AI?",
+                options: [
+                    "ChatGPT.",
+                    "Dây chuyền lắp ráp tự động.",
+                    "Dự báo thời tiết.",
+                    "Google Translate."
+                ],
+                correctText: "Dây chuyền lắp ráp tự động."
+            },
+            {
+                type: "mcq",
+                id: 12,
+                q: "Để nhận biết phương tiện, người đi bộ và chướng ngại vật xung quanh, một hệ thống xe tự lái có thể kết hợp những cảm biến nào sau đây?",
+                options: [
+                    "Chỉ cảm biến nhiệt độ.",
+                    "Camera, lidar và radar.",
+                    "Chỉ cảm biến độ ẩm.",
+                    "Chỉ bộ thu tín hiệu GPS."
+                ],
+                correctText: "Camera, lidar và radar."
+            },
+            {
+                type: "mcq",
+                id: 13,
+                q: "Robot hình người nào sau đây do Honda phát triển?",
+                options: ["Valkyrie.", "Apollo.", "ASIMO.", "Sophia."],
+                correctText: "ASIMO."
+            },
+            {
+                type: "mcq",
+                id: 14,
+                q: "Trợ lí ảo có chức năng nào sau đây?",
+                options: [
+                    "Tìm kiếm thông tin bằng tiếng nói của người dùng.",
+                    "Kiểm tra lỗi chính tả.",
+                    "Nhận dạng chữ viết tay.",
+                    "Nhận dạng khuôn mặt."
+                ],
+                correctText: "Tìm kiếm thông tin bằng tiếng nói của người dùng."
+            },
+            {
+                type: "mcq",
+                id: 15,
+                q: "IoT là gì?",
+                options: [
+                    "Công nghệ thông tin.",
+                    "Thị giác máy tính.",
+                    "Học sâu.",
+                    "Internet vạn vật."
+                ],
+                correctText: "Internet vạn vật."
+            },
+            {
+                type: "mcq",
+                id: 17,
+                q: "Hội thảo nào được coi là điểm mốc ghi nhận sự ra đời của thuật ngữ AI, đánh dấu sự khởi đầu của lĩnh vực AI, thúc đẩy sự phát triển của lĩnh vực này trong các năm tiếp theo?",
+                options: [
+                    "Hội thảo Jenesys.",
+                    "Hội thảo Dartmouth.",
+                    "Hội thảo Hampshire.",
+                    "Hội thảo Bletchley."
+                ],
+                correctText: "Hội thảo Dartmouth."
+            },
+            {
+                type: "mcq",
+                id: 18,
+                q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của hệ chuyên gia về Toán học?",
+                options: ["MACSYMA.", "HEARSAY.", "MYCIN.", "DENDRAL."],
+                correctText: "MACSYMA."
+            },
+            {
+                type: "mcq",
+                id: 19,
+                q: "Phát biểu nào sau đây đúng?",
+                options: [
+                    "Hệ thống nhận dạng khuôn mặt là một ví dụ của trí tuệ nhân tạo tổng quát.",
+                    "Các robot thông minh được coi là ứng dụng điển hình của AI trong lĩnh vực điều khiển.",
+                    "Google dịch là dịch vụ dịch thuật có trả phí do Google phát triển.",
+                    "Hệ chuyên gia MYCIN sử dụng các kĩ thuật Học máy."
+                ],
+                correctText: "Các robot thông minh được coi là ứng dụng điển hình của AI trong lĩnh vực điều khiển."
+            },
+            {
+                type: "mcq",
+                id: 20,
+                q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một ứng dụng AI giúp xây dựng trải nghiệm giao tiếp tự nhiên?",
+                options: ["Dialogflow.", "TensorFlow.", "Origami.", "Rainbird."],
+                correctText: "Dialogflow."
+            },
+            {
+                type: "mcq",
+                id: 21,
+                q: "Trợ lí ảo của Samsung là",
+                options: ["Bixby.", "Alexa.", "Cortana.", "Siri."],
+                correctText: "Bixby."
+            },
+            {
+                type: "mcq",
+                id: 22,
+                q: "Phát biểu nào sau đây đúng?",
+                options: [
+                    "Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022.",
+                    "Các thành tựu hiện tại của AI đều là Trí tuệ nhân tạo tổng quát.",
+                    "ChatGPT có thể làm thơ, soạn nhạc, viết thư, thiết kế nhưng không thể sửa lỗi trong lập trình.",
+                    "Phiên bản GPT-2 được huấn luyện trên hàng vạn văn bản thuộc nhiều lĩnh vực khác nhau trên Internet, bao gồm sách, bài báo, trang web và nhiều nguồn khác."
+                ],
+                correctText: "Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022."
+            },
+            {
+                type: "mcq",
+                id: 23,
+                q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một ứng dụng AI có khả năng sáng tạo các tác phẩm âm nhạc?",
+                options: ["PaleBlue.", "Beatoven.", "Playment.", "DALL-E."],
+                correctText: "Beatoven."
+            },
+            {
+                type: "mcq",
+                id: 24,
+                q: "Robot hình người ASIMO do hãng nào phát triển?",
+                options: ["Toshiba.", "Tesla.", "NASA.", "Honda."],
+                correctText: "Honda."
+            },
+            {
+                type: "mcq",
+                id: 25,
+                q: "AI có lợi ích như thế nào đối với khoa học và nghiên cứu?",
+                options: [
+                    "Các hệ thống AI được tích hợp vào dây chuyền sản xuất giúp tăng hiệu suất, giảm sai sót và tiết kiệm chi phí nhờ khả năng làm việc liên tục và không cần nghỉ ngơi.",
+                    "AI được sử dụng để dự đoán các kết quả trong các lĩnh vực như thời tiết, tác động của biến đổi khí hậu và địa chất học.",
+                    "AI có thể phân tích dữ liệu bệnh lí của bệnh nhân và đề xuất phương pháp điều trị hiệu quả nhất.",
+                    "AI có thể tự động chấm điểm bài kiểm tra và phân loại học sinh dựa trên thành tích học tập."
+                ],
+                correctText: "AI được sử dụng để dự đoán các kết quả trong các lĩnh vực như thời tiết, tác động của biến đổi khí hậu và địa chất học."
+            },
+            {
+                type: "mcq",
+                id: 26,
+                q: "Thị giác máy tính (tiếng Anh: Computer vision), là một lĩnh vực trong khoa học máy tính và trí tuệ nhân tạo (AI) tập trung vào việc phát triển phương pháp và công nghệ để máy tính có khả năng nhận diện, hiểu và xử lý hình ảnh và video một cách tự động. Thị giác máy tính sử dụng các thuật toán và mô hình học máy để phân tích và rút trích thông tin từ dữ liệu hình ảnh, như các đặc trưng, đối tượng, mối quan hệ và bối cảnh. Vậy theo em, thị giác máy tính thực hiện được tác vụ nào sau đây?",
+                options: [
+                    "Phân tích hình ảnh y tế.",
+                    "Dự báo thời tiết.",
+                    "Nhận dạng giọng nói.",
+                    "Tăng độ nét và làm mịn ảnh."
+                ],
+                correctText: "Phân tích hình ảnh y tế."
+            },
+            {
+                type: "mcq",
+                id: 27,
+                q: "Phần mềm IBM Watson for Oncology góp phần nâng cao hiệu quả điều trị bệnh gì?",
+                options: ["Bệnh tiểu đường.", "Bệnh ung thư.", "Bệnh tim.", "Bệnh phổi."],
+                correctText: "Bệnh ung thư."
+            },
+            {
+                type: "mcq",
+                id: 28,
+                q: "Tác vụ nào sau đây không phải là chức năng thông thường của trợ lí ảo Siri?",
+                options: [
+                    "Tìm kiếm thông tin theo yêu cầu.",
+                    "Đặt báo thức theo lệnh nói.",
+                    "Gọi điện cho một người trong danh bạ.",
+                    "Tự phân tích ảnh CT để chẩn đoán bệnh."
+                ],
+                correctText: "Tự phân tích ảnh CT để chẩn đoán bệnh."
+            },
+            {
+                type: "mcq",
+                id: 29,
+                q: "Phát biểu nào sau đây sai?",
+                options: [
+                    "Mọi ứng dụng AI trong thực tế đều cần có sự kết hợp ở các mức độ khác nhau của những đặc trưng trí tuệ.",
+                    "Mục tiêu của việc phát triển ứng dụng AI là nhằm xây dựng các phần mềm giúp máy tính có được những năng lực trí tuệ như con người.",
+                    "Chương trình máy tính chơi cờ là một ví dụ của trí tuệ nhân tạo mạnh.",
+                    "Giữa AI và tự động hoá có sự khác biệt."
+                ],
+                correctText: "Chương trình máy tính chơi cờ là một ví dụ của trí tuệ nhân tạo mạnh."
+            },
+            {
+                type: "mcq",
+                id: 30,
+                q: "Phương án nào sau đây là ứng dụng của AI trong lĩnh vực y học?",
+                options: [
+                    "Bảo mật thông tin.",
+                    "Xác định các bất thường trên hình ảnh CT/MRI sọ não.",
+                    "Dịch thuật.",
+                    "Nhận dạng biển số xe."
+                ],
+                correctText: "Xác định các bất thường trên hình ảnh CT/MRI sọ não."
+            },
+            {
+                type: "mcq",
+                id: 31,
+                q: "Hệ thống phân tích tài chính thuộc loại trí tuệ nhân tạo nào?",
+                options: [
+                    "Trí tuệ nhân tạo tổng quát.",
+                    "Trí tuệ nhân tạo hẹp.",
+                    "Trí tuệ nhân tạo mạnh.",
+                    "Siêu trí tuệ nhân tạo."
+                ],
+                correctText: "Trí tuệ nhân tạo hẹp."
+            },
+
+            // TRUE / FALSE QUESTIONS
+            {
+                type: "tf",
+                id: 32,
+                q: "Một giáo viên đang giải thích sự khác biệt giữa ứng dụng AI và hệ thống tự động hóa. Giáo viên đưa ra các ví dụ sau: Máy điều hòa tự động ngắt khi đạt nhiệt độ cài đặt; xe tự lái sử dụng AI để nhận diện và né tránh chướng ngại vật; hệ thống tìm kiếm thông tin như Google có khả năng hiểu ngôn ngữ tự nhiên để trả lời các câu hỏi của người dùng; guồng nước ở vùng quê tự quay để chuyển nước lên các đường dẫn nhờ dòng chảy tự nhiên. Học sinh đã đưa ra những nhận xét về các ứng dụng của AI và hệ thống tự động hóa trong các ví dụ trên như sau:",
+                subQuestions: [
+                    { id: "a", text: "Máy điều hòa tự động ngắt khi đạt nhiệt độ cài đặt là một hệ thống tự động hóa và không được coi là AI.", answer: true },
+                    { id: "b", text: "Xe tự lái sử dụng AI vì nó có khả năng nhận diện và ra quyết định dựa trên dữ liệu từ cảm biến.", answer: true },
+                    { id: "c", text: "Hệ thống tìm kiếm Google không được coi là AI vì nó không có khả năng nhận diện ngữ cảnh ngôn ngữ.", answer: false },
+                    { id: "d", text: "Guồng nước không phải là AI vì nó chỉ hoạt động dựa trên cơ chế vật lý tự nhiên, không có khả năng học hoặc suy luận.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 33,
+                q: "AI đã có thể thay thế con người trong một số lĩnh vực như giao thông vận tải, ngân hàng, sáng tạo nghệ thuật và công nghiệp. Vậy AI có thay thế được con người trong các lĩnh vực trên?",
+                subQuestions: [
+                    { id: "a", text: "AI không thể tạo ra các tác phẩm nghệ thuật, mà chỉ mô phỏng lại những gì đã tồn tại.", answer: false },
+                    { id: "b", text: "Xe tự lái đã hoàn toàn thay thế được tài xế con người nhờ sự hỗ trợ của AI.", answer: false },
+                    { id: "c", text: "AI trong công nghiệp được sử dụng để tự động hóa toàn bộ chuỗi sản xuất và quản lý chuỗi cung ứng.", answer: true },
+                    { id: "d", text: "AI trong ngân hàng có thể phân tích dữ liệu để phát hiện gian lận và tự động hóa quy trình.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 34,
+                q: "Ngày nay, AI tạo sinh được sử dụng để tạo ra nội dung như hình ảnh, âm thanh và văn bản. ChatGPT là một hệ thống AI có khả năng suy luận, học tập và tương tác với con người thông qua ngôn ngữ. Tuy nhiên, AI cũng có thể tạo ra nguy cơ liên quan đến quyền riêng tư, minh bạch và an ninh.",
+                subQuestions: [
+                    { id: "a", text: "Các nguy cơ của AI bao gồm cả việc xâm phạm quyền riêng tư và rủi ro về an ninh.", answer: true },
+                    { id: "b", text: "AI hiện nay chưa đạt đến mức trí tuệ nhân tạo mạnh, nhưng đã có những bước tiến quan trọng trong việc xử lý thông tin ngôn ngữ.", answer: true },
+                    { id: "c", text: "AI tạo sinh chỉ được sử dụng trong các lĩnh vực nghệ thuật và giải trí, không ứng dụng trong khoa học.", answer: false },
+                    { id: "d", text: "ChatGPT có khả năng tương tác linh hoạt với người dùng, cung cấp câu trả lời tùy theo ngữ cảnh.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 35,
+                q: "Ngày nay, các ứng dụng AI xuất hiện trong nhiều lĩnh vực khác nhau. Hãy xác định mỗi nhận định sau là đúng hay sai.",
+                subQuestions: [
+                    { id: "a", text: "Google Dịch có thể dịch từ, cụm từ, tài liệu và trang web.", answer: true },
+                    { id: "b", text: "Hệ thống nhận dạng khuôn mặt có thể phân tích hình ảnh để xác định một người đã được đăng ký trong cơ sở dữ liệu.", answer: true },
+                    { id: "c", text: "Robot ASIMO do hãng Tesla phát triển.", answer: false },
+                    { id: "d", text: "Hệ chuyên gia MYCIN sử dụng kỹ thuật học máy để tự tạo ra các luật suy diễn.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 36,
+                q: "Hệ chuyên gia MYCIN trong y học có khả năng chẩn đoán vi khuẩn gây nhiễm trùng máu và đề xuất kháng sinh phù hợp dựa trên khoảng 600 luật suy diễn. MYCIN không sử dụng kỹ thuật Học máy nhưng vẫn được coi là một ứng dụng AI tiêu biểu trong giai đoạn đầu phát triển của lĩnh vực này.",
+                subQuestions: [
+                    { id: "a", text: "Hệ chuyên gia MYCIN không được coi là AI vì nó không sử dụng kỹ thuật Học máy.", answer: false },
+                    { id: "b", text: "Hệ chuyên gia mô phỏng khả năng ra quyết định của con người trong các lĩnh vực chuyên môn cụ thể.", answer: true },
+                    { id: "c", text: "MYCIN có thể tự học hỏi từ dữ liệu mới mà không cần lập trình thêm luật suy diễn.", answer: false },
+                    { id: "d", text: "Một hệ chuyên gia có thể hoạt động hiệu quả ngay cả khi không sử dụng dữ liệu lớn hoặc kỹ thuật học máy.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 37,
+                q: "AI đã được ứng dụng rộng rãi trong các lĩnh vực như hệ chuyên gia, y học, nông nghiệp và giáo dục. Dưới đây là các nhận định về AI trong một số lĩnh vực khác nhau:",
+                subQuestions: [
+                    { id: "a", text: "AI trong giáo dục chỉ hỗ trợ việc đánh giá kết quả học tập, không có khả năng cá nhân hóa lộ trình học tập cho từng học sinh.", answer: false },
+                    { id: "b", text: "Các hệ chuyên gia ngày nay chỉ hoạt động dựa vào tri thức ban đầu mà chuyên gia cung cấp, không thể tự học.", answer: false },
+                    { id: "c", text: "Trong nông nghiệp, AI có thể dự đoán mùa vụ, thời điểm thu hoạch và tối ưu hóa quy trình chăm sóc cây trồng, vật nuôi.", answer: true },
+                    { id: "d", text: "AI giúp chẩn đoán bệnh và đưa ra hướng điều trị chính xác hơn cho bệnh nhân.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 38,
+                q: "Sự phát triển của AI diễn ra nhanh chóng, có tiềm năng cách mạng hóa nhiều lĩnh vực khoa học và đời sống nhưng cũng kéo theo những nguy cơ cần được cảnh báo.",
+                subQuestions: [
+                    { id: "a", text: "ChatGPT là một ví dụ điển hình của AI tạo sinh.", answer: true },
+                    { id: "b", text: "Những quyết định không chính xác do AI đưa ra có thể gây nguy hại trực tiếp cho con người, ví dụ chẩn đoán sai về tình trạng bệnh tật hay ra quyết định tấn công các mục tiêu dân sự trong xung đột vũ trang.", answer: true },
+                    { id: "c", text: "AI có khả năng tự động hóa nhiều công việc, điều này làm tăng mối lo ngại về quyền riêng tư có khả năng bị lạm dụng.", answer: false },
+                    { id: "d", text: "AI tạo sinh tập trung vào việc nghiên cứu làm cho máy tính có khả năng học từ dữ liệu thu được trong quá trình hoạt động để tự hoàn thiện và nâng cao năng lực nhận thức.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 39,
+                q: "Nhiều lĩnh vực khoa học, công nghệ và đời sống đã và đang nhận được rất nhiều lợi ích từ sự phát triển của AI.",
+                subQuestions: [
+                    { id: "a", text: "Trong nông nghiệp, AI được sử dụng trong các trang trại thông minh để theo dõi những yếu tố có ảnh hưởng trực tiếp tới hiệu quả nuôi trồng.", answer: true },
+                    { id: "b", text: "Các chuyên gia y tế khẳng định phần mềm IBM Watson for Oncology đã góp phần nâng cao hiệu quả điều trị bệnh gan.", answer: false },
+                    { id: "c", text: "Hệ thống nhận dạng chữ viết tay là một thành tựu của xử lí ngôn ngữ tự nhiên trong AI.", answer: false },
+                    { id: "d", text: "Trong lĩnh vực khoa học xã hội và nhân văn, AI được sử dụng để mô phỏng và mô hình hoá nhiều hiện tượng xã hội và nhân học.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 40,
+                q: "Mục tiêu của việc phát triển ứng dụng AI là nhằm xây dựng các phần mềm giúp máy tính có được những năng lực trí tuệ như con người.",
+                subQuestions: [
+                    { id: "a", text: "Trí tuệ nhân tạo tổng quát hay Trí tuệ nhân tạo mạnh có khả năng tự học, tự thích nghi và thực hiện được nhiều công việc giống như con người.", answer: true },
+                    { id: "b", text: "Các dây chuyền lắp ráp là các hệ thống có ứng dụng AI.", answer: false },
+                    { id: "c", text: "Khả năng học là khả năng vận dụng logic và tri thức để đưa ra quyết định hoặc kết luận.", answer: false },
+                    { id: "d", text: "Các máy tìm kiếm thông tin trên Internet như Google, Bing có thể hiểu yêu cầu tra cứu của người dùng được đưa vào bằng văn bản hay bằng tiếng nói.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 41,
+                q: "Trí tuệ nhân tạo (AI) là khả năng của máy tính thực hiện các công việc trí tuệ tương tự con người, như học, suy luận, nhận thức và giải quyết vấn đề. Các ứng dụng AI phổ biến gồm hệ thống khuyến nghị, xe tự lái và phần mềm dịch ngôn ngữ tự động.",
+                subQuestions: [
+                    { id: "a", text: "Một phần mềm dịch ngôn ngữ tự động chỉ cần có khả năng dịch từ ngữ theo câu chữ mà không cần hiểu ngữ cảnh văn bản vẫn được coi là AI.", answer: false },
+                    { id: "b", text: "Hệ thống khuyến nghị trên YouTube hoạt động dựa trên lịch sử xem của người dùng và sử dụng kỹ thuật học máy để đề xuất nội dung.", answer: true },
+                    { id: "c", text: "Mọi hệ thống tự động đều có thể được coi là AI, miễn là chúng không cần sự can thiệp của con người.", answer: false },
+                    { id: "d", text: "Xe tự lái có khả năng nhận diện môi trường xung quanh bằng cảm biến và ra quyết định dựa trên thuật toán được coi là ứng dụng của AI.", answer: true }
+                ]
+            }
+        ];
+
+        // QUESTION BANK 2: LESSON 2 (BÀI 2)
+        const bankLesson2 = [
+            {
+                type: "mcq", id: 1,
+                q: "Hiện nay có những loại địa chỉ IP nào?",
+                options: ["IPv1 và IPv3.", "IPv4 và IPv6.", "IPv2 và IPv4.", "IPv4 và IPv5."],
+                correctText: "IPv4 và IPv6."
+            },
+            {
+                type: "mcq", id: 2,
+                q: "Lệnh dùng để kiểm tra cấu hình IP của máy tính đang sử dụng là",
+                options: ["driverquery.", "systeminfo.", "ipconfig.", "taskkill."],
+                correctText: "ipconfig."
+            },
+            {
+                type: "mcq", id: 3,
+                q: "Phát biểu nào sau đây đúng?",
+                options: [
+                    "Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định.",
+                    "Khi dùng hub thì tín hiệu đi từ máy gửi đến máy nhận sẽ không gây xung đột với tín hiệu của các cuộc truyền ở cổng khác.",
+                    "Switch có chi phí rẻ hơn rất nhiều so với một hub có cùng số cổng.",
+                    "Mạng viễn thông sử dụng các modem để chuyển tiếp dữ liệu."
+                ],
+                correctText: "Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định."
+            },
+            {
+                type: "mcq", id: 4,
+                q: "Wireless Access Point (WAP) có chức năng gì?",
+                options: [
+                    "Dùng để kết nối các máy tính trong cùng LAN trực tiếp qua cáp mạng.",
+                    "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc.",
+                    "Chuyển đổi tín hiệu từ tín hiệu số sang tín hiệu tương tự và ngược lại, thường dùng khi kết nối LAN với Internet.",
+                    "Dùng để dẫn đường cho dữ liệu khi kết nối trên mạng diện rộng như Internet."
+                ],
+                correctText: "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc."
+            },
+            {
+                type: "mcq", id: 5,
+                q: "Thiết bị nào xác định cổng kết nối giữa thiết bị gửi và thiết bị nhận, sau đó thiết lập tạm thời kênh truyền giữa hai cổng kết nối để truyền dữ liệu và huỷ kết nối sau khi hoàn thành việc truyền?",
+                options: ["Hub.", "Router.", "Switch.", "Modem."],
+                correctText: "Switch."
+            },
+            {
+                type: "tf", id: 6,
+                q: "Một doanh nghiệp có hàng trăm máy tính trong mạng LAN và dùng nhiều switch kết nối theo mô hình phân cấp. Doanh nghiệp kết nối Internet bằng router và thiết bị đầu cuối quang ONT. Router định tuyến gói tin giữa LAN và Internet; ONT chuyển đổi giữa tín hiệu quang trên đường truyền của nhà cung cấp và tín hiệu điện ở cổng Ethernet. Nhân viên làm việc trong khuôn viên công ty cần dùng điện thoại hoặc máy tính bảng để truy cập mạng nội bộ. Công ty triển khai các bộ thu phát Wi-Fi (WAP) nối với LAN có dây để cung cấp kết nối không dây trong vùng phủ sóng. Đặc điểm của các thiết bị trên khiến chúng được sử dụng như vậy là:",
+                subQuestions: [
+                    { id: "a", text: "WAP cung cấp kết nối không dây vào LAN cho thiết bị di động trong vùng phủ sóng.", answer: true },
+                    { id: "b", text: "Việc chuyển đổi giữa tín hiệu quang và tín hiệu điện tại ONT nhằm giữ nguyên thông tin dữ liệu được truyền.", answer: true },
+                    { id: "c", text: "Chức năng định tuyến của router tự nó bao gồm cả chức năng điều chế và giải điều chế của modem.", answer: false },
+                    { id: "d", text: "Các switch có thể kết nối với nhau theo mô hình phân cấp để liên kết nhiều máy tính trong LAN.", answer: true }
+                ]
+            },
+            {
+                type: "mcq", id: 7,
+                q: "Các LAN thường dùng loại cáp mạng nào?",
+                options: ["FTP.", "STP.", "UTP.", "ETP."],
+                correctText: "UTP."
+            },
+            {
+                type: "tf", id: 8,
+                q: "Tất cả các hoạt động truyền thông trên mạng đều cần có giao thức giúp việc gửi, nhận dữ liệu chính xác, tin cậy và hiệu quả.",
+                subQuestions: [
+                    { id: "a", text: "Giao thức mạng còn được gọi là giao thức truyền thông.", answer: true },
+                    { id: "b", text: "Mỗi gói tin IP có các trường địa chỉ IP nguồn và địa chỉ IP đích trong phần đầu gói tin.", answer: true },
+                    { id: "c", text: "DNS là giao thức truyền tải siêu văn bản.", answer: false },
+                    { id: "d", text: "Giao thức TCP quy định cách thiết lập địa chỉ cho các thiết bị tham gia mạng và cách dẫn đường các gói dữ liệu theo địa chỉ từ thiết bị gửi đến thiết bị nhận.", answer: false }
+                ]
+            },
+            {
+                type: "tf", id: 9,
+                q: "Trong quá trình gửi và nhận thư điện tử, nhiều quy định đã được thiết lập để đảm bảo tính chính xác và hiệu quả. Dưới đây là một số nhận định:",
+                subQuestions: [
+                    { id: "a", text: "Các giao thức như SMTP, POP3 và IMAP quy định cách thức gửi và nhận dữ liệu trong quá trình trao đổi thư điện tử.", answer: true },
+                    { id: "b", text: "Máy chủ thư tự động chuyển thư đến một người nhận khác nếu địa chỉ người nhận ban đầu không tồn tại.", answer: false },
+                    { id: "c", text: "Khi gửi email có tệp đính kèm, phần đầu thư, nội dung và tệp đính kèm được tổ chức thành thông điệp thư điện tử để truyền qua mạng.", answer: true },
+                    { id: "d", text: "Địa chỉ email của người gửi chỉ nằm trong phần nội dung thư, không xuất hiện trong phần đầu thư.", answer: false }
+                ]
+            },
+            {
+                type: "mcq", id: 10,
+                q: "Giao thức quy định cách biểu diễn (mã hoá) các trang web là",
+                options: ["SNMP.", "DHCP.", "HTTP.", "DNS."],
+                correctText: "HTTP."
+            },
+            {
+                type: "mcq", id: 11,
+                q: "Giao thức mạng nào hỗ trợ lấy địa chỉ MAC theo địa chỉ IP?",
+                options: ["DDS.", "BGP.", "ICMP.", "ARP."],
+                correctText: "ARP."
+            },
+            {
+                type: "tf", id: 12,
+                q: "Trong một buổi học Tin học, cô giáo đã trình chiếu thông tin về các giao thức mạng như sau: Để các thiết bị trong mạng Internet có thể giao tiếp với nhau, mỗi thiết bị cần có một địa chỉ IP. Địa chỉ IP có hai loại chính là IPv4 và IPv6. Địa chỉ IPv4 gồm 4 byte, thường được viết dưới dạng thập phân và phân tách bằng dấu chấm, ví dụ 192.168.1.1. Địa chỉ IP là địa chỉ logic, khác với địa chỉ MAC dùng để nhận diện giao diện mạng ở tầng liên kết dữ liệu. Mỗi gói tin IP có địa chỉ IP nguồn và IP đích. Khi truyền khung Ethernet giữa hai thiết bị trong cùng LAN, khung có địa chỉ MAC nguồn và MAC đích. Nếu thiết bị nhận nằm ngoài mạng LAN, gói tin sẽ được gửi đến router. Router sẽ sử dụng bảng định tuyến để chọn đường đi phù hợp và gửi gói tin đến đích. Từ những thông tin đã trình chiếu trước lớp, cô giáo yêu cầu học sinh nêu ra một số nhận định về IP.",
+                subQuestions: [
+                    { id: "a", text: "Địa chỉ IP là địa chỉ vật lý gắn liền với phần cứng của thiết bị, tương tự như địa chỉ MAC.", answer: false },
+                    { id: "b", text: "Để truyền dữ liệu trong mạng LAN, các gói tin chỉ cần có địa chỉ IP của thiết bị nhận.", answer: false },
+                    { id: "c", text: "Router sử dụng bảng định tuyến để quyết định đường đi của gói tin, gửi đến địa chỉ IP của thiết bị nhận.", answer: true },
+                    { id: "d", text: "Địa chỉ IPv4 được biểu diễn bằng 4 byte và thường viết dưới dạng thập phân, phân tách bằng dấu chấm.", answer: true }
+                ]
+            },
+            {
+                type: "mcq", id: 13,
+                q: "Khi kết nối hai máy tính (có thể cách xa hàng nghìn kilômét) qua Internet, người ta sử dụng thiết bị nào để kết nối các LAN với nhau?",
+                options: ["Wireless Access Point.", "Hub.", "Router.", "Switch."],
+                correctText: "Router."
+            },
+            {
+                type: "tf", id: 14,
+                q: "Máy tính (kể cả các thiết bị di động) có thể kết nối vào mạng bằng cáp tín hiệu hoặc qua sóng Wi-Fi.",
+                subQuestions: [
+                    { id: "a", text: "Mọi máy tính để bàn đều có sẵn bộ điều hợp Wi-Fi nên không cần kiểm tra phần cứng khi muốn kết nối không dây.", answer: false },
+                    { id: "b", text: "Khi kết nối thủ công vào mạng Wi-Fi dùng mật khẩu chung và không dùng phương thức thay thế, người dùng cần nhập đúng mật khẩu của mạng.", answer: true },
+                    { id: "c", text: "Wi-Fi là công nghệ mạng không dây dựa trên họ tiêu chuẩn IEEE 802.11.", answer: true },
+                    { id: "d", text: "Để máy tính trong LAN có thể giao tiếp với Internet thì chỉ cần cắm cáp mạng UTP vào cổng RJ45 của máy tính.", answer: false }
+                ]
+            },
+            {
+                type: "mcq", id: 15,
+                q: "Phát biểu nào sau đây sai?",
+                options: [
+                    "Giao thức TCP đảm bảo việc truyền dữ liệu theo từng ứng dụng một cách chính xác, tin cậy và hiệu quả.",
+                    "Giao thức IP đảm bảo chuyển dữ liệu từ mạng này đến mạng kia và chuyển dữ liệu đến một ứng dụng cụ thể trên một máy cụ thể.",
+                    "Theo phương pháp định tuyến tĩnh, mỗi router có một bảng định tuyến.",
+                    "MAC là địa chỉ vật lí của máy tính."
+                ],
+                correctText: "Giao thức IP đảm bảo chuyển dữ liệu từ mạng này đến mạng kia và chuyển dữ liệu đến một ứng dụng cụ thể trên một máy cụ thể."
+            },
+            {
+                type: "mcq", id: 16,
+                q: "Wi-Fi sử dụng loại sóng nào để truyền dữ liệu?",
+                options: ["Sóng vô tuyến điện.", "Sóng mang.", "Sóng điện từ.", "Sóng ánh sáng."],
+                correctText: "Sóng vô tuyến điện."
+            },
+            {
+                type: "mcq", id: 17,
+                q: "Điểm khác nhau của switch và hub là gì?",
+                options: ["Màu sắc.", "Số cổng.", "Hình dạng.", "Cách thức hoạt động."],
+                correctText: "Cách thức hoạt động."
+            },
+            {
+                type: "mcq", id: 18,
+                q: "Trên mỗi router, cổng để kết nối với các router khác gọi là gì?",
+                options: ["Cổng LAN.", "Cổng AP.", "Cổng WAN.", "Cổng WAP."],
+                correctText: "Cổng WAN."
+            },
+            {
+                type: "mcq", id: 19,
+                q: "Hai giao thức IP và TCP xác định cách thức kết nối và trao đổi dữ liệu có tính đặc thù của Internet.",
+                options: [
+                    "Việc tách dữ liệu thành nhiều gói cho phép nhiều cuộc truyền khác nhau có thể được thực hiện xen kẽ nhau trên cùng một đường truyền vật lí giúp tận dụng được đường truyền.",
+                    "Địa chỉ IP giống với địa chỉ MAC.",
+                    "Giao thức TCP chỉ đảm bảo chuyển dữ liệu từ mạng này đến mạng kia mà không đảm bảo chuyển dữ liệu đến một ứng dụng cụ thể trên một máy cụ thể.",
+                    "Mỗi địa chỉ IP là một số 4 bit."
+                ],
+                correctText: "Việc tách dữ liệu thành nhiều gói cho phép nhiều cuộc truyền khác nhau có thể được thực hiện xen kẽ nhau trên cùng một đường truyền vật lí giúp tận dụng được đường truyền."
+            },
+            {
+                type: "mcq", id: 20,
+                q: "Chuẩn mạng nào sau đây quy định cách truyền khung dữ liệu ở tầng liên kết dữ liệu trong mạng LAN có dây thông dụng?",
+                options: ["Bộ giao thức TCP/IP.", "Giao thức HTTPS.", "Giao thức DNS.", "Ethernet."],
+                correctText: "Ethernet."
+            },
+            {
+                type: "mcq", id: 21,
+                q: "Loại modem nào cho phép nối hai máy tính qua hệ thống chuyển mạch của mạng điện thoại công cộng?",
+                options: ["Modem GSM 3G, 4G, 5G,…", "Modem ADSL.", "Modem quay số.", "Modem quang."],
+                correctText: "Modem quay số."
+            },
+            {
+                type: "mcq", id: 22,
+                q: "Phát biểu nào sau đây sai?",
+                options: [
+                    "Switch dùng để kết nối các đoạn mạng với nhau theo mô hình hình sao.",
+                    "Hiện nay có hai loại Hub phổ biến là Active Hub và Smart Hub.",
+                    "Modem có chức năng chuyển hoá các gói dữ liệu từ nhà cung cấp dịch vụ mạng (ISP) thành các kết nối Internet cho các router hoặc các thiết bị liên kết mạng khác qua địa chỉ IP.",
+                    "Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer)."
+                ],
+                correctText: "Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer)."
+            },
+            {
+                type: "tf", id: 23,
+                q: "Ngày trước, chúng ta thường sử dụng thư truyền thống để liên lạc. Tuy nhiên, ngày nay, thư truyền thống đã dần được thay thế bởi thư điện tử, phổ biến nhất là email. Đối với thư truyền thống, thời gian vận chuyển thường kéo dài và cần một số thông tin như nội dung thư, phong bì, tem, thông tin người gửi và người nhận,... Khác với thư truyền thống, thư điện tử có một số đặc điểm như sau:",
+                subQuestions: [
+                    { id: "a", text: "Thư đã gửi không thể xem lại nội dung; cách duy nhất là yêu cầu người nhận gửi lại.", answer: false },
+                    { id: "b", text: "Thời gian vận chuyển kéo dài, đôi khi lên đến vài ngày, thậm chí vài tháng.", answer: false },
+                    { id: "c", text: "Ngoài nội dung thư, người dùng cần cung cấp địa chỉ email hợp lệ của người nhận.", answer: true },
+                    { id: "d", text: "Trong điều kiện hệ thống và đường truyền hoạt động bình thường, email thường được gửi và nhận nhanh, có thể chỉ mất vài giây.", answer: true }
+                ]
+            },
+            {
+                type: "tf", id: 24,
+                q: "Thiết bị mạng đảm bảo kết nối các máy tính, thiết bị thông minh,… tạo thành mạng máy tính.",
+                subQuestions: [
+                    { id: "a", text: "Bộ thu phát Wi-Fi (WAP) là thiết bị giúp các thiết bị đầu cuối kết nối không dây vào mạng cục bộ (LAN).", answer: true },
+                    { id: "b", text: "Các cổng LAN trên router gia đình dùng để kết nối với các thiết bị trong mạng cục bộ.", answer: true },
+                    { id: "c", text: "Switch luôn chuyển mọi khung dữ liệu nhận được ra tất cả các cổng còn lại, bất kể địa chỉ MAC đích.", answer: false },
+                    { id: "d", text: "Modem quay số (dial-up) được sử dụng rất phổ biến để kết nối Internet tốc độ cao trước khi cáp quang được dùng rộng rãi.", answer: false }
+                ]
+            },
+            {
+                type: "mcq", id: 25,
+                q: "Các quy định liên quan đến gửi thư có tên là gì?",
+                options: ["Giao thức POP3.", "Giao thức IMAP.", "Giao thức SMTP.", "Giao thức MQTT."],
+                correctText: "Giao thức SMTP."
+            },
+            {
+                type: "mcq", id: 26,
+                q: "Địa chỉ IP 11001011 10100010 00101001 11111110 dưới dạng thập phân là",
+                options: ["203.162.41.254.", "230.178.52.166.", "203.126.71.235.", "235.197.80.255."],
+                correctText: "203.162.41.254."
+            },
+            {
+                type: "mcq", id: 27,
+                q: "Khi kết nối máy tính với các thiết bị mạng, cần cắm một đầu giắc của cáp vào cổng nào của máy tính?",
+                options: ["RJ45.", "VJ45.", "CJ45.", "PJ45."],
+                correctText: "RJ45."
+            },
+            {
+                type: "mcq", id: 28,
+                q: "Mạng cục bộ còn được gọi là",
+                options: ["mạng LAN.", "mạng WAN.", "mạng MAN.", "mạng PAN."],
+                correctText: "mạng LAN."
+            },
+            {
+                type: "tf", id: 29,
+                q: "Một gia đình muốn thiết lập mạng cục bộ (LAN) để kết nối các thiết bị trong nhà, bao gồm máy tính, TV thông minh và điện thoại di động. Họ phân vân nên chọn hub hay switch để kết nối các thiết bị có dây. Trong khi đó, để kết nối không dây với các thiết bị di động và mở rộng phạm vi mạng, họ dự định sử dụng một bộ thu phát Wi-Fi (WAP). Sau khi thiết lập mạng tại nhà, họ nhận thấy rằng khi sử dụng hub, nhiều dữ liệu bị xung đột khiến mạng chậm đi đáng kể. Họ đã thay thế hub bằng switch và thấy hiệu quả cải thiện rõ rệt. Nguyên nhân của sự chênh lệch nêu trên là:",
+                subQuestions: [
+                    { id: "a", text: "Trong mạng LAN có ít thiết bị đầu cuối, chẳng hạn như mạng gia đình, việc sử dụng hub có thể chấp nhận được vì chi phí thấp hơn switch.", answer: true },
+                    { id: "b", text: "WAP không thể kết nối với mạng LAN có dây mà chỉ dùng để thay thế hoàn toàn các thiết bị có dây như hub hoặc switch.", answer: false },
+                    { id: "c", text: "Hub phát tán tín hiệu đến tất cả các cổng, dễ gây ra xung đột tín hiệu khi có nhiều thiết bị hoạt động đồng thời.", answer: true },
+                    { id: "d", text: "Switch giúp giảm thiểu xung đột tín hiệu so với hub nhờ khả năng thiết lập kênh truyền tạm thời giữa các thiết bị gửi và nhận.", answer: true }
+                ]
+            },
+            {
+                type: "mcq", id: 30,
+                q: "Nhóm địa chỉ IP 172.18.*.* có cổng",
+                options: ["4.", "1.", "2.", "3."],
+                correctText: "2."
+            },
+            {
+                type: "mcq", id: 31,
+                q: "Lệnh nào của giao thức ICMP (Internet Control Message Protocol) giúp kiểm tra máy tính có kết nối được với một máy tính hay một thiết bị mạng hay không?",
+                options: ["ping.", "touch.", "mkdir.", "tracert."],
+                correctText: "ping."
+            },
+            {
+                type: "tf", id: 32,
+                q: "Router được dùng để kết nối hai mạng LAN lại với nhau qua đường truyền Internet. Để sử dụng Internet trong mạng LAN, cần có modem để chuyển đổi tín hiệu từ tín hiệu số (digital) trong mạng LAN sang tín hiệu tương tự (analog) để truyền qua đường dây cáp quang hoặc sóng điện thoại di động. Sau khi tín hiệu được chuyển đổi, router sẽ định tuyến dữ liệu đến các mạng LAN khác. Dựa vào cách sử dụng của các thiết bị trên, chúng sẽ được sử dụng với các mục đích sau:",
+                subQuestions: [
+                    { id: "a", text: "Modem có chức năng chuyển đổi tín hiệu giữa tín hiệu số và tín hiệu tương tự, thường được đặt giữa router và nhà cung cấp dịch vụ Internet.", answer: true },
+                    { id: "b", text: "Switch hoặc hub có thể thay thế router khi cần kết nối hai mạng LAN qua Internet.", answer: false },
+                    { id: "c", text: "Router chỉ được sử dụng để định tuyến dữ liệu giữa các mạng LAN trong cùng một tòa nhà, không thể kết nối qua Internet.", answer: false },
+                    { id: "d", text: "Router của mạng gia đình thường tích hợp cả chức năng của modem và bộ thu phát Wi-Fi.", answer: true }
+                ]
+            },
+            {
+                type: "mcq", id: 33,
+                q: "Router là gì?",
+                options: ["Bộ định tuyến.", "Bộ chuyển mạch.", "Bộ thu phát không dây.", "Bộ chia tín hiệu."],
+                correctText: "Bộ định tuyến."
+            },
+            {
+                type: "mcq", id: 34,
+                q: "Địa chỉ máy chủ của Bộ Giáo dục và Đào tạo có thể thay thế bằng",
+                options: ["moet.edu.com.", "edu.moet.vn", "moet.edu.vn.", "edu.com.vn."],
+                correctText: "moet.edu.vn."
+            },
+            {
+                type: "mcq", id: 35,
+                q: "Việc truyền dữ liệu trong mạng cục bộ sẽ căn cứ vào địa chỉ gì?",
+                options: ["Địa chỉ LAN.", "Địa chỉ Server.", "Địa chỉ IP.", "Địa chỉ MAC."],
+                correctText: "Địa chỉ MAC."
+            },
+            {
+                type: "mcq", id: 36,
+                q: "Địa chỉ email nào sau đây là không hợp lệ?",
+                options: [
+                    "minhtuan@yahoo.com.vn.",
+                    "baochau1805@gmail.com.",
+                    "nguyenthutrang_k68@vnu.edu.vn.",
+                    "ngoc anh2007@gmail.com."
+                ],
+                correctText: "ngoc anh2007@gmail.com."
+            }
+        ];
+        
+        // QUESTION BANK 3: LESSON 3 (BÀI 3)
+        const bankLesson3 = [
+            // MULTIPLE-CHOICE QUESTIONS
+            { type: "mcq", id: 1, q: "Các quy định liên quan đến gửi thư có tên là gì?", options: ["Giao thức MQTT.", "Giao thức SMTP.", "Giao thức POP3.", "Giao thức IMAP."], correctText: "Giao thức SMTP." },
+            { type: "mcq", id: 2, q: "Hiện nay có những loại địa chỉ IP nào?", options: ["IPv4 và IPv6.", "IPv4 và IPv5.", "IPv1 và IPv3.", "IPv2 và IPv4."], correctText: "IPv4 và IPv6." },
+            { type: "mcq", id: 3, q: "Mốc khởi đầu của AI thường gắn với hội thảo Dartmouth. Hội thảo này diễn ra vào năm nào?", options: ["Hội thảo Dartmouth, năm 1946.", "Hội thảo Hampshire, năm 1956.", "Hội thảo Bletchley, năm 1956.", "Hội thảo Dartmouth, năm 1956."], correctText: "Hội thảo Dartmouth, năm 1956." },
+            { type: "mcq", id: 4, q: "Vì sao cần thận trọng khi sử dụng AI để hỗ trợ chẩn đoán bệnh?", options: ["AI luôn đưa ra kết quả giống nhau trong mọi trường hợp.", "Kết quả AI có thể sai, nên cần được chuyên gia y tế kiểm tra và cân nhắc.", "Kết quả do AI tạo ra không bao giờ ảnh hưởng đến quyết định điều trị.", "AI không thể xử lí bất kỳ loại dữ liệu y tế nào."], correctText: "Kết quả AI có thể sai, nên cần được chuyên gia y tế kiểm tra và cân nhắc." },
+            { type: "mcq", id: 5, q: "Giao thức mạng nào hỗ trợ lấy địa chỉ MAC theo địa chỉ IP?", options: ["BGP.", "ICMP.", "DDS.", "ARP."], correctText: "ARP." },
+            { type: "mcq", id: 6, q: "Mối lo ngại nào có thể phát sinh khi một ứng dụng AI thu thập lượng lớn dữ liệu cá nhân?", options: ["Màn hình máy tính giảm độ phân giải.", "Quyền riêng tư của người dùng có thể bị xâm phạm.", "Hệ điều hành tự động bị gỡ bỏ.", "Thiết bị không thể kết nối Internet."], correctText: "Quyền riêng tư của người dùng có thể bị xâm phạm." },
+            { type: "mcq", id: 7, q: "Phát biểu nào sau đây đúng?", options: ["Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định.", "Khi dùng hub thì tín hiệu đi từ máy gửi đến máy nhận sẽ không gây xung đột với tín hiệu của các cuộc truyền ở cổng khác.", "Switch có chi phí rẻ hơn rất nhiều so với một hub có cùng số cổng.", "Mạng viễn thông sử dụng các modem để chuyển tiếp dữ liệu."], correctText: "Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định." },
+            { type: "mcq", id: 8, q: "Thiết bị nào xác định cổng kết nối giữa thiết bị gửi và thiết bị nhận, sau đó thiết lập tạm thời kênh truyền giữa hai cổng kết nối để truyền dữ liệu và huỷ kết nối sau khi hoàn thành việc truyền?", options: ["Router.", "Modem.", "Switch.", "Hub."], correctText: "Switch." },
+            { type: "mcq", id: 9, q: "Robot hình người nào sau đây do Honda phát triển?", options: ["ASIMO.", "Valkyrie.", "Sophia.", "Apollo."], correctText: "ASIMO." },
+            { type: "mcq", id: 10, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một phần mềm AI giúp tạo hình ảnh dựa trên các miêu tả văn bản hoặc lời nói?", options: ["Codex.", "Rytr.", "Whisper.", "Midjourney."], correctText: "Midjourney." },
+            { type: "mcq", id: 11, q: "Các cảm biến đặt ngoài đồng ruộng gửi dữ liệu về nhiệt độ, độ ẩm và tình trạng cây trồng cho hệ thống AI. Hệ thống có thể giúp ích trực tiếp nhất bằng cách nào?", options: ["Tự động biến cây trồng thành giống mới.", "Loại bỏ nhu cầu kiểm tra dữ liệu cảm biến.", "Thay thế hoàn toàn mọi hoạt động chăm sóc cây trồng.", "Hỗ trợ theo dõi điều kiện canh tác và đề xuất cách chăm sóc phù hợp."], correctText: "Hỗ trợ theo dõi điều kiện canh tác và đề xuất cách chăm sóc phù hợp." },
+            { type: "mcq", id: 12, q: "Trợ lí ảo Bixby gắn với hãng công nghệ nào?", options: ["Microsoft.", "Samsung.", "Apple.", "Google."], correctText: "Samsung." },
+            { type: "mcq", id: 13, q: "Phát biểu nào phân biệt phù hợp giữa tự động hóa thông thường và AI?", options: ["Mọi thiết bị tự động đều có khả năng học.", "AI chỉ được dùng trong robot hình người.", "Tự động hóa luôn cần dữ liệu lớn, còn AI thì không.", "Một máy điều hòa ngắt theo ngưỡng nhiệt độ cài sẵn có thể là tự động hóa mà chưa cần AI."], correctText: "Một máy điều hòa ngắt theo ngưỡng nhiệt độ cài sẵn có thể là tự động hóa mà chưa cần AI." },
+            { type: "mcq", id: 14, q: "Các LAN thường dùng loại cáp mạng nào?", options: ["FTP.", "UTP.", "STP.", "ETP."], correctText: "UTP." },
+            { type: "mcq", id: 16, q: "Lệnh dùng để kiểm tra cấu hình IP của máy tính đang sử dụng là", options: ["driverquery.", "ipconfig.", "taskkill.", "systeminfo."], correctText: "ipconfig." },
+            { type: "mcq", id: 17, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của hệ chuyên gia về Toán học?", options: ["MYCIN.", "HEARSAY.", "DENDRAL.", "MACSYMA."], correctText: "MACSYMA." },
+            { type: "mcq", id: 18, q: "Một thành tựu của xử lí ngôn ngữ tự nhiên và thị giác máy tính là", options: ["hệ thống tưới tiêu tự động.", "hệ thống lắp ráp tự động.", "hệ thống nhận dạng hình ảnh và video.", "hệ thống phân tích dữ liệu."], correctText: "hệ thống nhận dạng hình ảnh và video." },
+            { type: "mcq", id: 19, q: "Trên mỗi router, cổng để kết nối với các router khác gọi là gì?", options: ["Cổng LAN.", "Cổng AP.", "Cổng WAP.", "Cổng WAN."], correctText: "Cổng WAN." },
+            { type: "mcq", id: 20, q: "Trí tuệ nhân tạo (AI) hướng đến mục tiêu nào sau đây?", options: ["Tăng dung lượng lưu trữ của máy tính.", "Thay thế mọi thiết bị điện tử bằng robot.", "Giúp máy tính thực hiện một số công việc trí tuệ tương tự con người.", "Làm cho máy tính luôn hoạt động mà không cần phần mềm."], correctText: "Giúp máy tính thực hiện một số công việc trí tuệ tương tự con người." },
+            { type: "mcq", id: 21, q: "Hội thảo nào được coi là điểm mốc ghi nhận sự ra đời của thuật ngữ AI, đánh dấu sự khởi đầu của lĩnh vực AI, thúc đẩy sự phát triển của lĩnh vực này trong các năm tiếp theo?", options: ["Hội thảo Hampshire.", "Hội thảo Jenesys.", "Hội thảo Dartmouth.", "Hội thảo Bletchley."], correctText: "Hội thảo Dartmouth." },
+            { type: "mcq", id: 22, q: "Một nền tảng video dựa vào lịch sử xem của người dùng để gợi ý nội dung phù hợp. Ví dụ này thể hiện rõ nhất đặc trưng nào của AI?", options: ["Khả năng tự sửa chữa phần cứng.", "Khả năng học từ dữ liệu.", "Khả năng kết nối thiết bị ngoại vi.", "Khả năng lưu trữ tệp."], correctText: "Khả năng học từ dữ liệu." },
+            { type: "mcq", id: 23, q: "Wireless Access Point (WAP) có chức năng gì?", options: ["Dùng để dẫn đường cho dữ liệu khi kết nối trên mạng diện rộng như Internet.", "Dùng để kết nối các máy tính trong cùng LAN trực tiếp qua cáp mạng.", "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc.", "Chuyển đổi tín hiệu từ tín hiệu số sang tín hiệu tương tự và ngược lại, thường dùng khi kết nối LAN với Internet."], correctText: "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc." },
+            { type: "mcq", id: 24, q: "Nhóm địa chỉ IP 172.18.*.* có cổng", options: ["4.", "3.", "1.", "2."], correctText: "2." },
+            { type: "mcq", id: 25, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một ứng dụng AI giúp xây dựng trải nghiệm giao tiếp tự nhiên?", options: ["Rainbird.", "Dialogflow.", "TensorFlow.", "Origami."], correctText: "Dialogflow." },
+            { type: "mcq", id: 26, q: "Chuẩn mạng nào sau đây quy định cách truyền khung dữ liệu ở tầng liên kết dữ liệu trong mạng LAN có dây thông dụng?", options: ["Ethernet.", "Giao thức DNS.", "Bộ giao thức TCP/IP.", "Giao thức HTTPS."], correctText: "Ethernet." },
+            { type: "mcq", id: 27, q: "Phát biểu nào sau đây đúng?", options: ["ChatGPT có thể làm thơ, soạn nhạc, viết thư, thiết kế nhưng không thể sửa lỗi trong lập trình.", "Phiên bản GPT-2 được huấn luyện trên hàng vạn văn bản thuộc nhiều lĩnh vực khác nhau trên Internet, bao gồm sách, bài báo, trang web và nhiều nguồn khác.", "Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022.", "Các thành tựu hiện tại của AI đều là Trí tuệ nhân tạo tổng quát."], correctText: "Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022." },
+            { type: "mcq", id: 28, q: "Để nhận biết phương tiện, người đi bộ và chướng ngại vật xung quanh, một hệ thống xe tự lái có thể kết hợp những cảm biến nào sau đây?", options: ["Camera, lidar và radar.", "Chỉ bộ thu tín hiệu GPS.", "Chỉ cảm biến độ ẩm.", "Chỉ cảm biến nhiệt độ."], correctText: "Camera, lidar và radar." },
+            { type: "mcq", id: 29, q: "Việc truyền dữ liệu trong mạng cục bộ sẽ căn cứ vào địa chỉ gì?", options: ["Địa chỉ MAC.", "Địa chỉ Server.", "Địa chỉ LAN.", "Địa chỉ IP."], correctText: "Địa chỉ MAC." },
+            { type: "mcq", id: 30, q: "Phần mềm IBM Watson for Oncology góp phần nâng cao hiệu quả điều trị bệnh gì?", options: ["Bệnh ung thư.", "Bệnh tim.", "Bệnh tiểu đường.", "Bệnh phổi."], correctText: "Bệnh ung thư." },
+            { type: "mcq", id: 31, q: "Địa chỉ máy chủ của Bộ Giáo dục và Đào tạo có thể thay thế bằng", options: ["edu.com.vn.", "moet.edu.com.", "moet.edu.vn.", "edu.moet.vn"], correctText: "moet.edu.vn." },
+            { type: "mcq", id: 32, q: "AI được sử dụng để mô phỏng và mô hình hóa các hiện tượng xã hội, nhân học chủ yếu trong lĩnh vực nào?", options: ["Khoa học xã hội và nhân văn.", "Khai thác khoáng sản.", "Chế tạo linh kiện điện tử.", "Thiết kế mạng máy tính."], correctText: "Khoa học xã hội và nhân văn." },
+            { type: "mcq", id: 33, q: "Lệnh nào của giao thức ICMP (Internet Control Message Protocol) giúp kiểm tra máy tính có kết nối được với một máy tính hay một thiết bị mạng hay không?", options: ["touch.", "ping.", "tracert.", "mkdir."], correctText: "ping." },
+            { type: "mcq", id: 34, q: "Hệ thống nào dưới đây không được coi là hệ thống có ứng dụng AI?", options: ["Dự báo thời tiết.", "Google Translate.", "Dây chuyền lắp ráp tự động.", "ChatGPT."], correctText: "Dây chuyền lắp ráp tự động." },
+            { type: "mcq", id: 35, q: "Phát biểu nào sau đây sai?", options: ["Modem có chức năng chuyển hoá các gói dữ liệu từ nhà cung cấp dịch vụ mạng (ISP) thành các kết nối Internet cho các router hoặc các thiết bị liên kết mạng khác qua địa chỉ IP.", "Switch dùng để kết nối các đoạn mạng với nhau theo mô hình hình sao.", "Hiện nay có hai loại Hub phổ biến là Active Hub và Smart Hub.", "Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer)."], correctText: "Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer)." },
+            { type: "mcq", id: 36, q: "Bệnh viện dùng phần mềm phân tích ảnh chụp CT để phát hiện dấu hiệu bất thường và hỗ trợ bác sĩ xem xét kết quả. Đây là ứng dụng AI tiêu biểu nào?", options: ["Thị giác máy tính trong y tế.", "Dịch máy.", "Điều khiển dây chuyền lắp ráp.", "Nhận dạng tiếng nói."], correctText: "Thị giác máy tính trong y tế." },
+            { type: "mcq", id: 37, q: "Router là gì?", options: ["Bộ chia tín hiệu.", "Bộ thu phát không dây.", "Bộ định tuyến.", "Bộ chuyển mạch."], correctText: "Bộ định tuyến." },
+            { type: "mcq", id: 38, q: "Một trợ lí học tập có kho kiến thức môn học, dùng câu trả lời của học sinh để suy ra phần kiến thức còn yếu, rồi điều chỉnh bài luyện tập tiếp theo. Ví dụ này thể hiện điều gì?", options: ["Hệ thống chỉ lưu trữ câu trả lời, không xử lí chúng.", "AI có thể kết hợp tri thức, suy luận và học từ dữ liệu để hỗ trợ người dùng.", "Mọi phần mềm học tập đều là AI tạo sinh.", "AI chỉ có thể hỗ trợ giáo viên chấm điểm."], correctText: "AI có thể kết hợp tri thức, suy luận và học từ dữ liệu để hỗ trợ người dùng." },
+            { type: "mcq", id: 39, q: "IBM Watson for Oncology được phát triển để hỗ trợ lĩnh vực nào?", options: ["Dự báo thời tiết.", "Ung thư học.", "Thiết kế thời trang.", "Quản lí giao thông."], correctText: "Ung thư học." },
+            { type: "mcq", id: 40, q: "Wi-Fi sử dụng loại sóng nào để truyền dữ liệu?", options: ["Sóng mang.", "Sóng vô tuyến điện.", "Sóng ánh sáng.", "Sóng điện từ."], correctText: "Sóng vô tuyến điện." },
+            { type: "mcq", id: 41, q: "Khi kết nối hai máy tính (có thể cách xa hàng nghìn kilômét) qua Internet, người ta sử dụng thiết bị nào để kết nối các LAN với nhau?", options: ["Router.", "Switch.", "Hub.", "Wireless Access Point."], correctText: "Router." },
+            { type: "mcq", id: 42, q: "Điểm khác nhau của switch và hub là gì?", options: ["Số cổng.", "Hình dạng.", "Màu sắc.", "Cách thức hoạt động."], correctText: "Cách thức hoạt động." },
+            { type: "mcq", id: 43, q: "Xe tự lái dùng camera và cảm biến để nhận biết người đi bộ, rồi quyết định giảm tốc khi cần. Mô tả nào giải thích phù hợp nhất hoạt động này?", options: ["Xe hoạt động nhờ người lái điều khiển từ xa trong mọi tình huống.", "Xe chỉ chạy theo lịch trình cố định, không cần xử lí dữ liệu.", "Xe nhận biết môi trường và lựa chọn hành động dựa trên dữ liệu thu được.", "Xe chỉ lưu hình ảnh để xem lại sau chuyến đi."], correctText: "Xe nhận biết môi trường và lựa chọn hành động dựa trên dữ liệu thu được." },
+            { type: "mcq", id: 44, q: "Địa chỉ IP 11001011 10100010 00101001 11111110 dưới dạng thập phân là", options: ["230.178.52.166.", "203.162.41.254.", "235.197.80.255.", "203.126.71.235."], correctText: "203.162.41.254." },
+            { type: "mcq", id: 45, q: "Giao thức quy định cách biểu diễn (mã hoá) các trang web là", options: ["DNS.", "SNMP.", "DHCP.", "HTTP."], correctText: "HTTP." },
+            { type: "mcq", id: 46, q: "Loại modem nào cho phép nối hai máy tính qua hệ thống chuyển mạch của mạng điện thoại công cộng?", options: ["Modem quay số.", "Modem ADSL.", "Modem GSM 3G, 4G, 5G,…", "Modem quang."], correctText: "Modem quay số." },
+            { type: "mcq", id: 47, q: "Trong phòng máy, các máy tính đã kết nối cùng mạng cục bộ. Một giáo viên muốn chia sẻ thư mục tài liệu cho một nhóm học sinh với quyền chỉ xem, đồng thời cho các em sử dụng máy in chung. Cách làm nào phù hợp nhất?", options: ["Chuyển thư mục sang máy in dùng chung để học sinh mở tài liệu.", "Chia sẻ thư mục với quyền chỉ đọc, bật chia sẻ máy in trên mạng cục bộ và kết nối các máy cần dùng với máy in đó.", "Tắt tính năng chia sẻ tệp và máy in trên máy tính chứa tài nguyên.", "Gửi mật khẩu quản trị của máy tính và máy in cho cả lớp."], correctText: "Chia sẻ thư mục với quyền chỉ đọc, bật chia sẻ máy in trên mạng cục bộ và kết nối các máy cần dùng với máy in đó." },
+            { type: "mcq", id: 48, q: "Khi kết nối máy tính với các thiết bị mạng, cần cắm một đầu giắc của cáp vào cổng nào của máy tính?", options: ["VJ45.", "RJ45.", "CJ45.", "PJ45."], correctText: "RJ45." },
+
+            // TRUE / FALSE QUESTIONS FROM SOURCE
+            {
+                type: "tf",
+                id: 101,
+                q: "Router được dùng để kết nối hai mạng LAN lại với nhau qua đường truyền Internet. Để sử dụng Internet trong mạng LAN, cần có modem để chuyển đổi tín hiệu từ tín hiệu số (digital) trong mạng LAN sang tín hiệu tương tự (analog) để truyền qua đường dây cáp quang hoặc sóng điện thoại di động. Sau khi tín hiệu được chuyển đổi, router sẽ định tuyến dữ liệu đến các mạng LAN khác. Dựa vào cách sử dụng của các thiết bị trên, chúng sẽ được sử dụng với các mục đích sau:",
+                subQuestions: [
+                    { id: "a", text: "Switch hoặc hub có thể thay thế router khi cần kết nối hai mạng LAN qua Internet.", answer: false },
+                    { id: "b", text: "Router của mạng gia đình thường tích hợp cả chức năng của modem và bộ thu phát Wi-Fi.", answer: true },
+                    { id: "c", text: "Router chỉ được sử dụng để định tuyến dữ liệu giữa các mạng LAN trong cùng một tòa nhà, không thể kết nối qua Internet.", answer: false },
+                    { id: "d", text: "Modem có chức năng chuyển đổi tín hiệu giữa tín hiệu số và tín hiệu tương tự, thường được đặt giữa router và nhà cung cấp dịch vụ Internet.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 102,
+                q: "Ngày trước, chúng ta thường sử dụng thư truyền thống để liên lạc. Tuy nhiên, ngày nay, thư truyền thống đã dần được thay thế bởi thư điện tử, phổ biến nhất là email. Đối với thư truyền thống, thời gian vận chuyển thường kéo dài và cần một số thông tin như nội dung thư, phong bì, tem, thông tin người gửi và người nhận,... Khác với thư truyền thống, thư điện tử có một số đặc điểm như sau:",
+                subQuestions: [
+                    { id: "a", text: "Trong điều kiện hệ thống và đường truyền hoạt động bình thường, email thường được gửi và nhận nhanh, có thể chỉ mất vài giây.", answer: true },
+                    { id: "b", text: "Ngoài nội dung thư, người dùng cần cung cấp địa chỉ email hợp lệ của người nhận.", answer: true },
+                    { id: "c", text: "Thời gian vận chuyển kéo dài, đôi khi lên đến vài ngày, thậm chí vài tháng.", answer: false },
+                    { id: "d", text: "Thư đã gửi không thể xem lại nội dung; cách duy nhất là yêu cầu người nhận gửi lại.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 103,
+                q: "Trong một buổi học Tin học, cô giáo đã trình chiếu thông tin về các giao thức mạng như sau: “Để các thiết bị trong mạng Internet có thể giao tiếp với nhau, mỗi thiết bị cần có một địa chỉ IP. Địa chỉ IP có hai loại chính là IPv4 và IPv6. Địa chỉ IPv4 gồm 4 byte, thường được viết dưới dạng thập phân và phân tách bằng dấu chấm, ví dụ 192.168.1.1. Địa chỉ IP là địa chỉ logic, khác với địa chỉ MAC dùng để nhận diện giao diện mạng ở tầng liên kết dữ liệu. Mỗi gói tin IP có địa chỉ IP nguồn và IP đích. Khi truyền khung Ethernet giữa hai thiết bị trong cùng LAN, khung có địa chỉ MAC nguồn và MAC đích. Nếu thiết bị nhận nằm ngoài mạng LAN, gói tin sẽ được gửi đến router. Router sẽ sử dụng bảng định tuyến để chọn đường đi phù hợp và gửi gói tin đến đích.” Từ những thông tin đã trình chiếu trước lớp, cô giáo yêu cầu học sinh nêu ra một số nhận định về IP.",
+                subQuestions: [
+                    { id: "a", text: "Để truyền dữ liệu trong mạng LAN, các gói tin chỉ cần có địa chỉ IP của thiết bị nhận.", answer: false },
+                    { id: "b", text: "Router sử dụng bảng định tuyến để quyết định đường đi của gói tin, gửi đến địa chỉ IP của thiết bị nhận.", answer: true },
+                    { id: "c", text: "Địa chỉ IP là địa chỉ vật lý gắn liền với phần cứng của thiết bị, tương tự như địa chỉ MAC.", answer: false },
+                    { id: "d", text: "Địa chỉ IPv4 được biểu diễn bằng 4 byte và thường viết dưới dạng thập phân, phân tách bằng dấu chấm.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 104,
+                q: "Trong quá trình gửi và nhận thư điện tử, nhiều quy định đã được thiết lập để đảm bảo tính chính xác và hiệu quả. Dưới đây là một số nhận định:",
+                subQuestions: [
+                    { id: "a", text: "Các giao thức như SMTP, POP3 và IMAP quy định cách thức gửi và nhận dữ liệu trong quá trình trao đổi thư điện tử.", answer: true },
+                    { id: "b", text: "Khi gửi email có tệp đính kèm, phần đầu thư, nội dung và tệp đính kèm được tổ chức thành thông điệp thư điện tử để truyền qua mạng.", answer: true },
+                    { id: "c", text: "Địa chỉ email của người gửi chỉ nằm trong phần nội dung thư, không xuất hiện trong phần đầu thư.", answer: false },
+                    { id: "d", text: "Máy chủ thư tự động chuyển thư đến một người nhận khác nếu địa chỉ người nhận ban đầu không tồn tại.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 105,
+                q: "Tất cả các hoạt động truyền thông trên mạng đều cần có giao thức giúp việc gửi, nhận dữ liệu chính xác, tin cậy và hiệu quả.",
+                subQuestions: [
+                    { id: "a", text: "Giao thức TCP quy định cách thiết lập địa chỉ cho các thiết bị tham gia mạng và cách dẫn đường các gói dữ liệu theo địa chỉ từ thiết bị gửi đến thiết bị nhận.", answer: false },
+                    { id: "b", text: "Mỗi gói tin IP có các trường địa chỉ IP nguồn và địa chỉ IP đích trong phần đầu gói tin.", answer: true },
+                    { id: "c", text: "DNS là giao thức truyền tải siêu văn bản.", answer: false },
+                    { id: "d", text: "Giao thức mạng còn được gọi là giao thức truyền thông.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 106,
+                q: "Một doanh nghiệp sử dụng dây chuyền lắp ráp tự động trong nhà máy. Ở khu vực hạn chế, camera tích hợp AI nhận biết người đi vào và gửi cảnh báo cho nhân viên phụ trách. Hãy xác định mỗi nhận định sau là đúng hay sai:",
+                subQuestions: [
+                    { id: "a", text: "Nhận dạng khuôn mặt trong ảnh là một ứng dụng của xử lí ngôn ngữ tự nhiên.", answer: false },
+                    { id: "b", text: "Bất cứ dây chuyền lắp ráp tự động nào cũng chắc chắn là một hệ thống AI.", answer: false },
+                    { id: "c", text: "AI hướng đến việc giúp máy tính thực hiện một số công việc trí tuệ như học, suy luận hoặc nhận thức.", answer: true },
+                    { id: "d", text: "Camera trong tình huống trên vận dụng khả năng nhận thức của AI để phát hiện người đi vào khu vực hạn chế và gửi cảnh báo.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 107,
+                q: "Thiết bị mạng đảm bảo kết nối các máy tính, thiết bị thông minh,… tạo thành mạng máy tính.",
+                subQuestions: [
+                    { id: "a", text: "Bộ thu phát Wi-Fi (WAP) là thiết bị giúp các thiết bị đầu cuối kết nối không dây vào mạng cục bộ (LAN).", answer: true },
+                    { id: "b", text: "Modem quay số (dial-up) được sử dụng rất phổ biến để kết nối Internet tốc độ cao trước khi cáp quang được dùng rộng rãi.", answer: false },
+                    { id: "c", text: "Các cổng LAN trên router gia đình dùng để kết nối với các thiết bị trong mạng cục bộ.", answer: true },
+                    { id: "d", text: "Switch luôn chuyển mọi khung dữ liệu nhận được ra tất cả các cổng còn lại, bất kể địa chỉ MAC đích.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 108,
+                q: "Một doanh nghiệp có hàng trăm máy tính trong mạng LAN và dùng nhiều switch kết nối theo mô hình phân cấp. Doanh nghiệp kết nối Internet bằng router và thiết bị đầu cuối quang ONT. Router định tuyến gói tin giữa LAN và Internet; ONT chuyển đổi giữa tín hiệu quang trên đường truyền của nhà cung cấp và tín hiệu điện ở cổng Ethernet. Nhân viên làm việc trong khuôn viên công ty cần dùng điện thoại hoặc máy tính bảng để truy cập mạng nội bộ. Công ty triển khai các bộ thu phát Wi-Fi (WAP) nối với LAN có dây để cung cấp kết nối không dây trong vùng phủ sóng. Đặc điểm của các thiết bị trên khiến chúng được sử dụng như vậy là:",
+                subQuestions: [
+                    { id: "a", text: "Việc chuyển đổi giữa tín hiệu quang và tín hiệu điện tại ONT nhằm giữ nguyên thông tin dữ liệu được truyền.", answer: true },
+                    { id: "b", text: "Các switch có thể kết nối với nhau theo mô hình phân cấp để liên kết nhiều máy tính trong LAN.", answer: true },
+                    { id: "c", text: "WAP cung cấp kết nối không dây vào LAN cho thiết bị di động trong vùng phủ sóng.", answer: true },
+                    { id: "d", text: "Chức năng định tuyến của router tự nó bao gồm cả chức năng điều chế và giải điều chế của modem.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 109,
+                q: "Một gia đình muốn thiết lập mạng cục bộ (LAN) để kết nối các thiết bị trong nhà, bao gồm máy tính, TV thông minh và điện thoại di động. Họ phân vân nên chọn hub hay switch để kết nối các thiết bị có dây. Trong khi đó, để kết nối không dây với các thiết bị di động và mở rộng phạm vi mạng, họ dự định sử dụng một bộ thu phát Wi-Fi (WAP). Sau khi thiết lập mạng tại nhà, họ nhận thấy rằng khi sử dụng hub, nhiều dữ liệu bị xung đột khiến mạng chậm đi đáng kể. Họ đã thay thế hub bằng switch và thấy hiệu quả cải thiện rõ rệt. Nguyên nhân của sự chênh lệch nêu trên là:",
+                subQuestions: [
+                    { id: "a", text: "Hub phát tán tín hiệu đến tất cả các cổng, dễ gây ra xung đột tín hiệu khi có nhiều thiết bị hoạt động đồng thời.", answer: true },
+                    { id: "b", text: "Switch giúp giảm thiểu xung đột tín hiệu so với hub nhờ khả năng thiết lập kênh truyền tạm thời giữa các thiết bị gửi và nhận.", answer: true },
+                    { id: "c", text: "WAP không thể kết nối với mạng LAN có dây mà chỉ dùng để thay thế hoàn toàn các thiết bị có dây như hub hoặc switch.", answer: false },
+                    { id: "d", text: "Trong mạng LAN có ít thiết bị đầu cuối, chẳng hạn như mạng gia đình, việc sử dụng hub có thể chấp nhận được vì chi phí thấp hơn switch.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 110,
+                q: "Máy tính (kể cả các thiết bị di động) có thể kết nối vào mạng bằng cáp tín hiệu hoặc qua sóng Wi-Fi.",
+                subQuestions: [
+                    { id: "a", text: "Mọi máy tính để bàn đều có sẵn bộ điều hợp Wi-Fi nên không cần kiểm tra phần cứng khi muốn kết nối không dây.", answer: false },
+                    { id: "b", text: "Wi-Fi là công nghệ mạng không dây dựa trên họ tiêu chuẩn IEEE 802.11.", answer: true },
+                    { id: "c", text: "Để máy tính trong LAN có thể giao tiếp với Internet thì chỉ cần cắm cáp mạng UTP vào cổng RJ45 của máy tính.", answer: false },
+                    { id: "d", text: "Khi kết nối thủ công vào mạng Wi-Fi dùng mật khẩu chung và không dùng phương thức thay thế, người dùng cần nhập đúng mật khẩu của mạng.", answer: true }
+                ]
+            }
+        ];
+        
+        // QUESTION BANK 4: LESSON 4 (BÀI 4)
+        const bankLesson4 = [
+            // MULTIPLE-CHOICE QUESTIONS
+            { type: "mcq", id: 1, q: "Điểm khác nhau của switch và hub là gì?", options: ["Màu sắc.", "Số cổng.", "Cách thức hoạt động.", "Hình dạng."], correctText: "Cách thức hoạt động." },
+            { type: "mcq", id: 2, q: "Trong phòng máy, các máy tính đã kết nối cùng mạng cục bộ. Một giáo viên muốn chia sẻ thư mục tài liệu cho một nhóm học sinh với quyền chỉ xem, đồng thời cho các em sử dụng máy in chung. Cách làm nào phù hợp nhất?", options: ["Chuyển thư mục sang máy in dùng chung để học sinh mở tài liệu.", "Chia sẻ thư mục với quyền chỉ đọc, bật chia sẻ máy in trên mạng cục bộ và kết nối các máy cần dùng với máy in đó.", "Tắt tính năng chia sẻ tệp và máy in trên máy tính chứa tài nguyên.", "Gửi mật khẩu quản trị của máy tính và máy in cho cả lớp."], correctText: "Chia sẻ thư mục với quyền chỉ đọc, bật chia sẻ máy in trên mạng cục bộ và kết nối các máy cần dùng với máy in đó." },
+            { type: "mcq", id: 3, q: "Wi-Fi sử dụng loại sóng nào để truyền dữ liệu?", options: ["Sóng mang.", "Sóng điện từ.", "Sóng ánh sáng.", "Sóng vô tuyến điện."], correctText: "Sóng vô tuyến điện." },
+            { type: "mcq", id: 4, q: "Lệnh dùng để kiểm tra cấu hình IP của máy tính đang sử dụng là", options: ["ipconfig.", "driverquery.", "taskkill.", "systeminfo."], correctText: "ipconfig." },
+            { type: "mcq", id: 5, q: "Để nhận biết phương tiện, người đi bộ và chướng ngại vật xung quanh, một hệ thống xe tự lái có thể kết hợp những cảm biến nào sau đây?", options: ["Chỉ bộ thu tín hiệu GPS.", "Chỉ cảm biến độ ẩm.", "Camera, lidar và radar.", "Chỉ cảm biến nhiệt độ."], correctText: "Camera, lidar và radar." },
+            { type: "mcq", id: 6, q: "Loại modem nào cho phép nối hai máy tính qua hệ thống chuyển mạch của mạng điện thoại công cộng?", options: ["Modem ADSL.", "Modem GSM 3G, 4G, 5G,…", "Modem quang.", "Modem quay số."], correctText: "Modem quay số." },
+            { type: "mcq", id: 7, q: "Giao thức mạng nào hỗ trợ lấy địa chỉ MAC theo địa chỉ IP?", options: ["ICMP.", "ARP.", "BGP.", "DDS."], correctText: "ARP." },
+            { type: "mcq", id: 8, q: "Phát biểu nào phân biệt phù hợp giữa tự động hóa thông thường và AI?", options: ["Tự động hóa luôn cần dữ liệu lớn, còn AI thì không.", "Một máy điều hòa ngắt theo ngưỡng nhiệt độ cài sẵn có thể là tự động hóa mà chưa cần AI.", "AI chỉ được dùng trong robot hình người.", "Mọi thiết bị tự động đều có khả năng học."], correctText: "Một máy điều hòa ngắt theo ngưỡng nhiệt độ cài sẵn có thể là tự động hóa mà chưa cần AI." },
+            { type: "mcq", id: 9, q: "Phát biểu nào sau đây đúng?", options: ["Mạng viễn thông sử dụng các modem để chuyển tiếp dữ liệu.", "Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định.", "Switch có chi phí rẻ hơn rất nhiều so với một hub có cùng số cổng.", "Khi dùng hub thì tín hiệu đi từ máy gửi đến máy nhận sẽ không gây xung đột với tín hiệu của các cuộc truyền ở cổng khác."], correctText: "Thông thường LAN kết nối có dây các máy tính qua các thiết bị như switch hay hub trong một phạm vi địa lí nhất định." },
+            { type: "mcq", id: 10, q: "Chuẩn mạng nào sau đây quy định cách truyền khung dữ liệu ở tầng liên kết dữ liệu trong mạng LAN có dây thông dụng?", options: ["Giao thức HTTPS.", "Ethernet.", "Giao thức DNS.", "Bộ giao thức TCP/IP."], correctText: "Ethernet." },
+            { type: "mcq", id: 11, q: "IBM Watson for Oncology được phát triển để hỗ trợ lĩnh vực nào?", options: ["Thiết kế thời trang.", "Ung thư học.", "Quản lí giao thông.", "Dự báo thời tiết."], correctText: "Ung thư học." },
+            { type: "mcq", id: 12, q: "Vì sao cần thận trọng khi sử dụng AI để hỗ trợ chẩn đoán bệnh?", options: ["Kết quả do AI tạo ra không bao giờ ảnh hưởng đến quyết định điều trị.", "AI không thể xử lí bất kỳ loại dữ liệu y tế nào.", "AI luôn đưa ra kết quả giống nhau trong mọi trường hợp.", "Kết quả AI có thể sai, nên cần được chuyên gia y tế kiểm tra và cân nhắc."], correctText: "Kết quả AI có thể sai, nên cần được chuyên gia y tế kiểm tra và cân nhắc." },
+            { type: "mcq", id: 13, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của hệ chuyên gia về Toán học?", options: ["DENDRAL.", "MACSYMA.", "HEARSAY.", "MYCIN."], correctText: "MACSYMA." },
+            { type: "mcq", id: 14, q: "Mối lo ngại nào có thể phát sinh khi một ứng dụng AI thu thập lượng lớn dữ liệu cá nhân?", options: ["Thiết bị không thể kết nối Internet.", "Hệ điều hành tự động bị gỡ bỏ.", "Quyền riêng tư của người dùng có thể bị xâm phạm.", "Màn hình máy tính giảm độ phân giải."], correctText: "Quyền riêng tư của người dùng có thể bị xâm phạm." },
+            { type: "mcq", id: 15, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một ứng dụng AI giúp xây dựng trải nghiệm giao tiếp tự nhiên?", options: ["Rainbird.", "TensorFlow.", "Dialogflow.", "Origami."], correctText: "Dialogflow." },
+            { type: "mcq", id: 16, q: "Khi kết nối máy tính với các thiết bị mạng, cần cắm một đầu giắc của cáp vào cổng nào của máy tính?", options: ["VJ45.", "RJ45.", "PJ45.", "CJ45."], correctText: "RJ45." },
+            { type: "mcq", id: 17, q: "Wireless Access Point (WAP) có chức năng gì?", options: ["Dùng để kết nối các máy tính trong cùng LAN trực tiếp qua cáp mạng.", "Dùng để dẫn đường cho dữ liệu khi kết nối trên mạng diện rộng như Internet.", "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc.", "Chuyển đổi tín hiệu từ tín hiệu số sang tín hiệu tương tự và ngược lại, thường dùng khi kết nối LAN với Internet."], correctText: "Dùng để kết nối các thiết bị đầu cuối qua sóng Wi-Fi giúp giảm chi phí thiết lập LAN hoặc kết nối với một LAN để mở rộng phạm vi làm việc." },
+            { type: "mcq", id: 18, q: "Địa chỉ IP 11001011 10100010 00101001 11111110 dưới dạng thập phân là", options: ["230.178.52.166.", "235.197.80.255.", "203.126.71.235.", "203.162.41.254."], correctText: "203.162.41.254." },
+            { type: "mcq", id: 19, q: "Giao thức quy định cách biểu diễn (mã hoá) các trang web là", options: ["DNS.", "DHCP.", "SNMP.", "HTTP."], correctText: "HTTP." },
+            { type: "mcq", id: 20, q: "AI được sử dụng để mô phỏng và mô hình hóa các hiện tượng xã hội, nhân học chủ yếu trong lĩnh vực nào?", options: ["Khoa học xã hội và nhân văn.", "Chế tạo linh kiện điện tử.", "Khai thác khoáng sản.", "Thiết kế mạng máy tính."], correctText: "Khoa học xã hội và nhân văn." },
+            { type: "mcq", id: 21, q: "Bệnh viện dùng phần mềm phân tích ảnh chụp CT để phát hiện dấu hiệu bất thường và hỗ trợ bác sĩ xem xét kết quả. Đây là ứng dụng AI tiêu biểu nào?", options: ["Điều khiển dây chuyền lắp ráp.", "Thị giác máy tính trong y tế.", "Dịch máy.", "Nhận dạng tiếng nói."], correctText: "Thị giác máy tính trong y tế." },
+            { type: "mcq", id: 22, q: "Thiết bị nào xác định cổng kết nối giữa thiết bị gửi và thiết bị nhận, sau đó thiết lập tạm thời kênh truyền giữa hai cổng kết nối để truyền dữ liệu và huỷ kết nối sau khi hoàn thành việc truyền?", options: ["Hub.", "Router.", "Switch.", "Modem."], correctText: "Switch." },
+            { type: "mcq", id: 23, q: "Xe tự lái dùng camera và cảm biến để nhận biết người đi bộ, rồi quyết định giảm tốc khi cần. Mô tả nào giải thích phù hợp nhất hoạt động này?", options: ["Xe hoạt động nhờ người lái điều khiển từ xa trong mọi tình huống.", "Xe chỉ chạy theo lịch trình cố định, không cần xử lí dữ liệu.", "Xe chỉ lưu hình ảnh để xem lại sau chuyến đi.", "Xe nhận biết môi trường và lựa chọn hành động dựa trên dữ liệu thu được."], correctText: "Xe nhận biết môi trường và lựa chọn hành động dựa trên dữ liệu thu được." },
+            { type: "mcq", id: 24, q: "Các cảm biến đặt ngoài đồng ruộng gửi dữ liệu về nhiệt độ, độ ẩm và tình trạng cây trồng cho hệ thống AI. Hệ thống có thể giúp ích trực tiếp nhất bằng cách nào?", options: ["Tự động biến cây trồng thành giống mới.", "Thay thế hoàn toàn mọi hoạt động chăm sóc cây trồng.", "Hỗ trợ theo dõi điều kiện canh tác và đề xuất cách chăm sóc phù hợp.", "Loại bỏ nhu cầu kiểm tra dữ liệu cảm biến."], correctText: "Hỗ trợ theo dõi điều kiện canh tác và đề xuất cách chăm sóc phù hợp." },
+            { type: "mcq", id: 25, q: "Nhóm địa chỉ IP 172.18.*.* có cổng", options: ["2.", "3.", "4.", "1."], correctText: "2." },
+            { type: "mcq", id: 26, q: "Hiện nay có những loại địa chỉ IP nào?", options: ["IPv1 và IPv3.", "IPv4 và IPv6.", "IPv2 và IPv4.", "IPv4 và IPv5."], correctText: "IPv4 và IPv6." },
+            { type: "mcq", id: 27, q: "Gia đình Lan đăng kí dịch vụ Internet cáp quang. Đường cáp của nhà mạng dẫn thẳng vào nhà dưới dạng tín hiệu ánh sáng. Thiết bị nào cần được sử dụng ngay tại đầu vào đường truyền để chuyển tín hiệu quang thành tín hiệu số mà máy tính có thể xử lí được?", options: ["Bộ chia tín hiệu (Hub) hỗ trợ nhiều cổng cắm chuẩn RJ45.", "Bộ chuyển mạch (Switch) thông thường dùng cho cáp đồng.", "Dây cáp mạng xoắn đôi UTP thông thường không kèm bộ đổi.", "Modem quang (hoặc Router tích hợp Modem quang)."], correctText: "Modem quang (hoặc Router tích hợp Modem quang)." },
+            { type: "mcq", id: 28, q: "Việc truyền dữ liệu trong mạng cục bộ sẽ căn cứ vào địa chỉ gì?", options: ["Địa chỉ LAN.", "Địa chỉ MAC.", "Địa chỉ Server.", "Địa chỉ IP."], correctText: "Địa chỉ MAC." },
+            { type: "mcq", id: 29, q: "Địa chỉ máy chủ của Bộ Giáo dục và Đào tạo có thể thay thế bằng", options: ["edu.com.vn.", "moet.edu.com.", "moet.edu.vn.", "edu.moet.vn"], correctText: "moet.edu.vn." },
+            { type: "mcq", id: 30, q: "Các quy định liên quan đến gửi thư có tên là gì?", options: ["Giao thức SMTP.", "Giao thức POP3.", "Giao thức IMAP.", "Giao thức MQTT."], correctText: "Giao thức SMTP." },
+            { type: "mcq", id: 31, q: "Mốc khởi đầu của AI thường gắn với hội thảo Dartmouth. Hội thảo này diễn ra vào năm nào?", options: ["Hội thảo Hampshire, năm 1956.", "Hội thảo Dartmouth, năm 1956.", "Hội thảo Dartmouth, năm 1946.", "Hội thảo Bletchley, năm 1956."], correctText: "Hội thảo Dartmouth, năm 1956." },
+            { type: "mcq", id: 32, q: "Một thành tựu của xử lí ngôn ngữ tự nhiên và thị giác máy tính là", options: ["hệ thống lắp ráp tự động.", "hệ thống phân tích dữ liệu.", "hệ thống tưới tiêu tự động.", "hệ thống nhận dạng hình ảnh và video."], correctText: "hệ thống nhận dạng hình ảnh và video." },
+            { type: "mcq", id: 33, q: "Lệnh nào của giao thức ICMP (Internet Control Message Protocol) giúp kiểm tra máy tính có kết nối được với một máy tính hay một thiết bị mạng hay không?", options: ["touch.", "ping.", "tracert.", "mkdir."], correctText: "ping." },
+            { type: "mcq", id: 34, q: "Trợ lí ảo Bixby gắn với hãng công nghệ nào?", options: ["Samsung.", "Microsoft.", "Apple.", "Google."], correctText: "Samsung." },
+            { type: "mcq", id: 35, q: "Các LAN thường dùng loại cáp mạng nào?", options: ["FTP.", "STP.", "UTP.", "ETP."], correctText: "UTP." },
+            { type: "mcq", id: 36, q: "Trợ lí ảo của Samsung là", options: ["Alexa.", "Bixby.", "Cortana.", "Siri."], correctText: "Bixby." },
+            { type: "mcq", id: 37, q: "Một nền tảng video dựa vào lịch sử xem của người dùng để gợi ý nội dung phù hợp. Ví dụ này thể hiện rõ nhất đặc trưng nào của AI?", options: ["Khả năng học từ dữ liệu.", "Khả năng kết nối thiết bị ngoại vi.", "Khả năng tự sửa chữa phần cứng.", "Khả năng lưu trữ tệp."], correctText: "Khả năng học từ dữ liệu." },
+            { type: "mcq", id: 38, q: "Một trợ lí học tập có kho kiến thức môn học, dùng câu trả lời của học sinh để suy ra phần kiến thức còn yếu, rồi điều chỉnh bài luyện tập tiếp theo. Ví dụ này thể hiện điều gì?", options: ["AI có thể kết hợp tri thức, suy luận và học từ dữ liệu để hỗ trợ người dùng.", "Hệ thống chỉ lưu trữ câu trả lời, không xử lí chúng.", "Mọi phần mềm học tập đều là AI tạo sinh.", "AI chỉ có thể hỗ trợ giáo viên chấm điểm."], correctText: "AI có thể kết hợp tri thức, suy luận và học từ dữ liệu để hỗ trợ người dùng." },
+            { type: "mcq", id: 39, q: "Phát biểu nào sau đây sai?", options: ["Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer).", "Switch dùng để kết nối các đoạn mạng với nhau theo mô hình hình sao.", "Modem có chức năng chuyển hoá các gói dữ liệu từ nhà cung cấp dịch vụ mạng (ISP) thành các kết nối Internet cho các router hoặc các thiết bị liên kết mạng khác qua địa chỉ IP.", "Hiện nay có hai loại Hub phổ biến là Active Hub và Smart Hub."], correctText: "Router là một thiết bị mạng thuộc lớp 2 của mô hình OSI (Network Layer)." },
+            { type: "mcq", id: 40, q: "Router là gì?", options: ["Bộ định tuyến.", "Bộ chuyển mạch.", "Bộ chia tín hiệu.", "Bộ thu phát không dây."], correctText: "Bộ định tuyến." },
+            { type: "mcq", id: 41, q: "Hệ thống nào dưới đây không được coi là hệ thống có ứng dụng AI?", options: ["Google Translate.", "Dự báo thời tiết.", "ChatGPT.", "Dây chuyền lắp ráp tự động."], correctText: "Dây chuyền lắp ráp tự động." },
+            { type: "mcq", id: 42, q: "Phát biểu nào sau đây đúng?", options: ["Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022.", "Phiên bản GPT-2 được huấn luyện trên hàng vạn văn bản thuộc nhiều lĩnh vực khác nhau trên Internet, bao gồm sách, bài báo, trang web và nhiều nguồn khác.", "ChatGPT có thể làm thơ, soạn nhạc, viết thư, thiết kế nhưng không thể sửa lỗi trong lập trình.", "Các thành tựu hiện tại của AI đều là Trí tuệ nhân tạo tổng quát."], correctText: "Nhiều chuyên gia coi ChatGPT là bước đột phá trong lĩnh vực AI của năm 2022." },
+            { type: "mcq", id: 43, q: "Hội thảo nào được coi là điểm mốc ghi nhận sự ra đời của thuật ngữ AI, đánh dấu sự khởi đầu của lĩnh vực AI, thúc đẩy sự phát triển của lĩnh vực này trong các năm tiếp theo?", options: ["Hội thảo Jenesys.", "Hội thảo Bletchley.", "Hội thảo Dartmouth.", "Hội thảo Hampshire."], correctText: "Hội thảo Dartmouth." },
+            { type: "mcq", id: 44, q: "Khi kết nối hai máy tính (có thể cách xa hàng nghìn kilômét) qua Internet, người ta sử dụng thiết bị nào để kết nối các LAN với nhau?", options: ["Router.", "Wireless Access Point.", "Hub.", "Switch."], correctText: "Router." },
+            { type: "mcq", id: 45, q: "Trí tuệ nhân tạo (AI) hướng đến mục tiêu nào sau đây?", options: ["Thay thế mọi thiết bị điện tử bằng robot.", "Làm cho máy tính luôn hoạt động mà không cần phần mềm.", "Tăng dung lượng lưu trữ của máy tính.", "Giúp máy tính thực hiện một số công việc trí tuệ tương tự con người."], correctText: "Giúp máy tính thực hiện một số công việc trí tuệ tương tự con người." },
+            { type: "mcq", id: 46, q: "Phần mềm IBM Watson for Oncology góp phần nâng cao hiệu quả điều trị bệnh gì?", options: ["Bệnh tim.", "Bệnh phổi.", "Bệnh tiểu đường.", "Bệnh ung thư."], correctText: "Bệnh ung thư." },
+            { type: "mcq", id: 47, q: "Trên mỗi router, cổng để kết nối với các router khác gọi là gì?", options: ["Cổng LAN.", "Cổng AP.", "Cổng WAP.", "Cổng WAN."], correctText: "Cổng WAN." },
+            { type: "mcq", id: 48, q: "Em hãy tìm hiểu trên Internet và cho biết phương án nào sau đây là tên của một phần mềm AI giúp tạo hình ảnh dựa trên các miêu tả văn bản hoặc lời nói?", options: ["Codex.", "Rytr.", "Midjourney.", "Whisper."], correctText: "Midjourney." },
+            { type: "mcq", id: 49, q: "Robot hình người nào sau đây do Honda phát triển?", options: ["Valkyrie.", "ASIMO.", "Apollo.", "Sophia."], correctText: "ASIMO." },
+
+            // TRUE / FALSE QUESTIONS FROM SOURCE
+            {
+                type: "tf",
+                id: 50,
+                q: "Tất cả các hoạt động truyền thông trên mạng đều cần có giao thức giúp việc gửi, nhận dữ liệu chính xác, tin cậy và hiệu quả.",
+                subQuestions: [
+                    { id: "a", text: "Mỗi gói tin IP có các trường địa chỉ IP nguồn và địa chỉ IP đích trong phần đầu gói tin.", answer: true },
+                    { id: "b", text: "Giao thức TCP quy định cách thiết lập địa chỉ cho các thiết bị tham gia mạng và cách dẫn đường các gói dữ liệu theo địa chỉ từ thiết bị gửi đến thiết bị nhận.", answer: false },
+                    { id: "c", text: "Giao thức mạng còn được gọi là giao thức truyền thông.", answer: true },
+                    { id: "d", text: "DNS là giao thức truyền tải siêu văn bản.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 51,
+                q: "Router được dùng để kết nối hai mạng LAN lại với nhau qua đường truyền Internet. Để sử dụng Internet trong mạng LAN, cần có modem để chuyển đổi tín hiệu từ tín hiệu số (digital) trong mạng LAN sang tín hiệu tương tự (analog) để truyền qua đường dây cáp quang hoặc sóng điện thoại di động. Sau khi tín hiệu được chuyển đổi, router sẽ định tuyến dữ liệu đến các mạng LAN khác. Dựa vào cách sử dụng của các thiết bị trên, chúng sẽ được sử dụng với các mục đích sau:",
+                subQuestions: [
+                    { id: "a", text: "Router chỉ được sử dụng để định tuyến dữ liệu giữa các mạng LAN trong cùng một tòa nhà, không thể kết nối qua Internet.", answer: false },
+                    { id: "b", text: "Modem có chức năng chuyển đổi tín hiệu giữa tín hiệu số và tín hiệu tương tự, thường được đặt giữa router và nhà cung cấp dịch vụ Internet.", answer: true },
+                    { id: "c", text: "Router của mạng gia đình thường tích hợp cả chức năng của modem và bộ thu phát Wi-Fi.", answer: true },
+                    { id: "d", text: "Switch hoặc hub có thể thay thế router khi cần kết nối hai mạng LAN qua Internet.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 52,
+                q: "Trong quá trình gửi và nhận thư điện tử, nhiều quy định đã được thiết lập để đảm bảo tính chính xác và hiệu quả. Dưới đây là một số nhận định:",
+                subQuestions: [
+                    { id: "a", text: "Địa chỉ email của người gửi chỉ nằm trong phần nội dung thư, không xuất hiện trong phần đầu thư.", answer: false },
+                    { id: "b", text: "Khi gửi email có tệp đính kèm, phần đầu thư, nội dung và tệp đính kèm được tổ chức thành thông điệp thư điện tử để truyền qua mạng.", answer: true },
+                    { id: "c", text: "Các giao thức như SMTP, POP3 và IMAP quy định cách thức gửi và nhận dữ liệu trong quá trình trao đổi thư điện tử.", answer: true },
+                    { id: "d", text: "Máy chủ thư tự động chuyển thư đến một người nhận khác nếu địa chỉ người nhận ban đầu không tồn tại.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 53,
+                q: "Ngày trước, chúng ta thường sử dụng thư truyền thống để liên lạc. Tuy nhiên, ngày nay, thư truyền thống đã dần được thay thế bởi thư điện tử, phổ biến nhất là email. Đối với thư truyền thống, thời gian vận chuyển thường kéo dài và cần một số thông tin như nội dung thư, phong bì, tem, thông tin người gửi và người nhận,... Khác với thư truyền thống, thư điện tử có một số đặc điểm như sau:",
+                subQuestions: [
+                    { id: "a", text: "Thư đã gửi không thể xem lại nội dung; cách duy nhất là yêu cầu người nhận gửi lại.", answer: false },
+                    { id: "b", text: "Trong điều kiện hệ thống và đường truyền hoạt động bình thường, email thường được gửi và nhận nhanh, có thể chỉ mất vài giây.", answer: true },
+                    { id: "c", text: "Thời gian vận chuyển kéo dài, đôi khi lên đến vài ngày, thậm chí vài tháng.", answer: false },
+                    { id: "d", text: "Ngoài nội dung thư, người dùng cần cung cấp địa chỉ email hợp lệ của người nhận.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 54,
+                q: "Một gia đình muốn thiết lập mạng cục bộ (LAN) để kết nối các thiết bị trong nhà, bao gồm máy tính, TV thông minh và điện thoại di động. Họ phân vân nên chọn hub hay switch để kết nối các thiết bị có dây. Trong khi đó, để kết nối không dây với các thiết bị di động và mở rộng phạm vi mạng, họ dự định sử dụng một bộ thu phát Wi-Fi (WAP). Sau khi thiết lập mạng tại nhà, họ nhận thấy rằng khi sử dụng hub, nhiều dữ liệu bị xung đột khiến mạng chậm đi đáng kể. Họ đã thay thế hub bằng switch và thấy hiệu quả cải thiện rõ rệt. Nguyên nhân của sự chênh lệch nêu trên là:",
+                subQuestions: [
+                    { id: "a", text: "WAP không thể kết nối với mạng LAN có dây mà chỉ dùng để thay thế hoàn toàn các thiết bị có dây như hub hoặc switch.", answer: false },
+                    { id: "b", text: "Trong mạng LAN có ít thiết bị đầu cuối, chẳng hạn như mạng gia đình, việc sử dụng hub có thể chấp nhận được vì chi phí thấp hơn switch.", answer: true },
+                    { id: "c", text: "Switch giúp giảm thiểu xung đột tín hiệu so với hub nhờ khả năng thiết lập kênh truyền tạm thời giữa các thiết bị gửi và nhận.", answer: true },
+                    { id: "d", text: "Hub phát tán tín hiệu đến tất cả các cổng, dễ gây ra xung đột tín hiệu khi có nhiều thiết bị hoạt động đồng thời.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 55,
+                q: "Trí tuệ nhân tạo (AI) là khả năng của máy tính thực hiện các công việc trí tuệ tương tự con người, như học, suy luận, nhận thức và giải quyết vấn đề. Một số ứng dụng AI phổ biến có thể kể đến như hệ thống khuyến nghị (ví dụ: YouTube gợi ý video dựa trên lịch sử xem), xe tự lái sử dụng cảm biến và thuật toán để nhận diện vật cản, biển báo giao thông và người đi bộ, các phần mềm dịch ngôn ngữ tự động (như Google Dịch) giúp chuyển đổi văn bản hoặc lời nói giữa các ngôn ngữ. Dưới đây là các nhận định được đưa ra về các ví dụ trên:",
+                subQuestions: [
+                    { id: "a", text: "Hệ thống khuyến nghị trên YouTube hoạt động dựa trên lịch sử xem của người dùng và sử dụng kỹ thuật học máy để đề xuất nội dung.", answer: true },
+                    { id: "b", text: "Xe tự lái có khả năng nhận diện môi trường xung quanh bằng cảm biến và ra quyết định dựa trên thuật toán được coi là ứng dụng của AI.", answer: true },
+                    { id: "c", text: "Một phần mềm dịch ngôn ngữ tự động chỉ cần có khả năng dịch từ ngữ theo câu chữ mà không cần hiểu ngữ cảnh văn bản vẫn được coi là AI.", answer: false },
+                    { id: "d", text: "Mọi hệ thống tự động đều có thể được coi là AI, miễn là chúng không cần sự can thiệp của con người.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 56,
+                q: "Thiết bị mạng đảm bảo kết nối các máy tính, thiết bị thông minh,… tạo thành mạng máy tính.",
+                subQuestions: [
+                    { id: "a", text: "Switch luôn chuyển mọi khung dữ liệu nhận được ra tất cả các cổng còn lại, bất kể địa chỉ MAC đích.", answer: false },
+                    { id: "b", text: "Các cổng LAN trên router gia đình dùng để kết nối với các thiết bị trong mạng cục bộ.", answer: true },
+                    { id: "c", text: "Bộ thu phát Wi-Fi (WAP) là thiết bị giúp các thiết bị đầu cuối kết nối không dây vào mạng cục bộ (LAN).", answer: true },
+                    { id: "d", text: "Modem quay số (dial-up) được sử dụng rất phổ biến để kết nối Internet tốc độ cao trước khi cáp quang được dùng rộng rãi.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 57,
+                q: "Trong một buổi học Tin học, cô giáo đã trình chiếu thông tin về các giao thức mạng như sau: “Để các thiết bị trong mạng Internet có thể giao tiếp với nhau, mỗi thiết bị cần có một địa chỉ IP. Địa chỉ IP có hai loại chính là IPv4 và IPv6. Địa chỉ IPv4 gồm 4 byte, thường được viết dưới dạng thập phân và phân tách bằng dấu chấm, ví dụ 192.168.1.1. Địa chỉ IP là địa chỉ logic, khác với địa chỉ MAC dùng để nhận diện giao diện mạng ở tầng liên kết dữ liệu. Mỗi gói tin IP có địa chỉ IP nguồn và IP đích. Khi truyền khung Ethernet giữa hai thiết bị trong cùng LAN, khung có địa chỉ MAC nguồn và MAC đích. Nếu thiết bị nhận nằm ngoài mạng LAN, gói tin sẽ được gửi đến router. Router sẽ sử dụng bảng định tuyến để chọn đường đi phù hợp và gửi gói tin đến đích.” Từ những thông tin đã trình chiếu trước lớp, cô giáo yêu cầu học sinh nêu ra một số nhận định về IP.",
+                subQuestions: [
+                    { id: "a", text: "Để truyền dữ liệu trong mạng LAN, các gói tin chỉ cần có địa chỉ IP của thiết bị nhận.", answer: false },
+                    { id: "b", text: "Địa chỉ IP là địa chỉ vật lý gắn liền với phần cứng của thiết bị, tương tự như địa chỉ MAC.", answer: false },
+                    { id: "c", text: "Địa chỉ IPv4 được biểu diễn bằng 4 byte và thường viết dưới dạng thập phân, phân tách bằng dấu chấm.", answer: true },
+                    { id: "d", text: "Router sử dụng bảng định tuyến để quyết định đường đi của gói tin, gửi đến địa chỉ IP của thiết bị nhận.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 58,
+                q: "Một doanh nghiệp có hàng trăm máy tính trong mạng LAN và dùng nhiều switch kết nối theo mô hình phân cấp. Doanh nghiệp kết nối Internet bằng router và thiết bị đầu cuối quang ONT. Router định tuyến gói tin giữa LAN và Internet; ONT chuyển đổi giữa tín hiệu quang trên đường truyền của nhà cung cấp và tín hiệu điện ở cổng Ethernet. Nhân viên làm việc trong khuôn viên công ty cần dùng điện thoại hoặc máy tính bảng để truy cập mạng nội bộ. Công ty triển khai các bộ thu phát Wi-Fi (WAP) nối với LAN có dây để cung cấp kết nối không dây trong vùng phủ sóng. Đặc điểm của các thiết bị trên khiến chúng được sử dụng như vậy là:",
+                subQuestions: [
+                    { id: "a", text: "Việc chuyển đổi giữa tín hiệu quang và tín hiệu điện tại ONT nhằm giữ nguyên thông tin dữ liệu được truyền.", answer: true },
+                    { id: "b", text: "Chức năng định tuyến của router tự nó bao gồm cả chức năng điều chế và giải điều chế của modem.", answer: false },
+                    { id: "c", text: "Các switch có thể kết nối với nhau theo mô hình phân cấp để liên kết nhiều máy tính trong LAN.", answer: true },
+                    { id: "d", text: "WAP cung cấp kết nối không dây vào LAN cho thiết bị di động trong vùng phủ sóng.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 59,
+                q: "Một doanh nghiệp sử dụng dây chuyền lắp ráp tự động trong nhà máy. Ở khu vực hạn chế, camera tích hợp AI nhận biết người đi vào và gửi cảnh báo cho nhân viên phụ trách. Hãy xác định mỗi nhận định sau là đúng hay sai:",
+                subQuestions: [
+                    { id: "a", text: "Bất cứ dây chuyền lắp ráp tự động nào cũng chắc chắn là một hệ thống AI.", answer: false },
+                    { id: "b", text: "Nhận dạng khuôn mặt trong ảnh là một ứng dụng của xử lí ngôn ngữ tự nhiên.", answer: false },
+                    { id: "c", text: "Camera trong tình huống trên vận dụng khả năng nhận thức của AI để phát hiện người đi vào khu vực hạn chế và gửi cảnh báo.", answer: true },
+                    { id: "d", text: "AI hướng đến việc giúp máy tính thực hiện một số công việc trí tuệ như học, suy luận hoặc nhận thức.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 60,
+                q: "AI đã có thể thay thế con người trong một số lĩnh vực như: Giao thông vận tải (hỗ trợ phát triển ra dòng xe tự lái, quản lý giao thông thông minh,...); Ngân hàng (tự động hóa nhập dữ liệu, phát hiện gian lận, dịch vụ cá nhân hóa khách hàng,...); Sáng tạo nghệ thuật (Tạo ra các sản phẩm âm nhạc, hội họa, văn học theo nhiều cách khác nhau); Công nghiệp (Tự động hóa chuỗi sản xuất). Vậy AI có thay thế được con người trong các lĩnh vực trên? Một số ý kiến đã được đưa ra như sau:",
+                subQuestions: [
+                    { id: "a", text: "AI trong ngân hàng có thể phân tích dữ liệu để phát hiện gian lận và tự động hóa quy trình.", answer: true },
+                    { id: "b", text: "AI trong công nghiệp được sử dụng để tự động hóa toàn bộ chuỗi sản xuất và quản lý chuỗi cung ứng.", answer: true },
+                    { id: "c", text: "AI không thể tạo ra các tác phẩm nghệ thuật, mà chỉ mô phỏng lại những gì đã tồn tại.", answer: false },
+                    { id: "d", text: "Xe tự lái đã hoàn toàn thay thế được tài xế con người nhờ sự hỗ trợ của AI.", answer: false }
+                ]
+            },
+            {
+                type: "tf",
+                id: 61,
+                q: "Sự phát triển của AI đã và đang diễn ra với tốc độ nhanh chóng, có tiềm năng cách mạng hoá nhiều lĩnh vực khoa học và đời sống nhưng cũng kéo theo những nguy cơ cần được cảnh báo.",
+                subQuestions: [
+                    { id: "a", text: "Những quyết định không chính xác do AI đưa ra có thể gây nguy hại trực tiếp cho con người, ví dụ chẩn đoán sai về tình trạng bệnh tật hay ra quyết định tấn công các mục tiêu dân sự trong xung đột vũ trang,…", answer: true },
+                    { id: "b", text: "AI có khả năng tự động hoá nhiều công việc, điều này làm tăng mối lo ngại về quyền riêng tư có khả năng bị lạm dụng.", answer: false },
+                    { id: "c", text: "AI tạo sinh tập trung vào việc nghiên cứu làm cho máy tính có khả năng học từ dữ liệu thu được trong quá trình hoạt động để tự hoàn thiện và nâng cao năng lực nhận thức.", answer: false },
+                    { id: "d", text: "ChatGPT là một ví dụ điển hình của AI tạo sinh.", answer: true }
+                ]
+            },
+            {
+                type: "tf",
+                id: 62,
+                q: "Máy tính (kể cả các thiết bị di động) có thể kết nối vào mạng bằng cáp tín hiệu hoặc qua sóng Wi-Fi.",
+                subQuestions: [
+                    { id: "a", text: "Khi kết nối thủ công vào mạng Wi-Fi dùng mật khẩu chung và không dùng phương thức thay thế, người dùng cần nhập đúng mật khẩu của mạng.", answer: true },
+                    { id: "b", text: "Wi-Fi là công nghệ mạng không dây dựa trên họ tiêu chuẩn IEEE 802.11.", answer: true },
+                    { id: "c", text: "Mọi máy tính để bàn đều có sẵn bộ điều hợp Wi-Fi nên không cần kiểm tra phần cứng khi muốn kết nối không dây.", answer: false },
+                    { id: "d", text: "Để máy tính trong LAN có thể giao tiếp với Internet thì chỉ cần cắm cáp mạng UTP vào cổng RJ45 của máy tính.", answer: false }
+                ]
+            }
+        ];
+        
+        // THEME LOGIC
+        function initTheme() {
+            const savedTheme = localStorage.getItem('app-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('app-theme', next);
+            updateThemeButton(next);
+        }
+
+        function updateThemeButton(theme) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (theme === 'dark') {
+                icon.innerText = '☀️';
+                text.innerText = 'Light';
+            } else {
+                icon.innerText = '🌙';
+                text.innerText = 'Dark';
+            }
+        }
+
+        function calculateQuestionTime(item) {
+            if (item.type === "mcq") {
+                const totalText = item.q + " " + item.options.join(" ");
+                const len = totalText.length;
+                if (len < 120) return 15;
+                if (len < 220) return 25;
+                return 35;
+            } else {
+                return 50;
+            }
+        }
+
+        let questions = [];
+        let currentIndex = 0;
+        let totalPoints = 0;
+        let currentStreak = 0;
+        let userHistory = [];
+        let tfUserSelections = {};
+
+        let timerInterval = null;
+        let timeTotal = 0;
+        let timeRemaining = 0;
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function showStartScreen() {
+            clearInterval(timerInterval);
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        function startGame() {
+            clearInterval(timerInterval);
+
+            // Get selected lesson
+            const choice = document.getElementById('lesson-choice').value;
+            let activeBank = [];
+
+            if (choice === 'b1') {
+                activeBank = [...bankLesson1];
+            } else if (choice === 'b2') {
+                activeBank = [...bankLesson2];
+            } else if (choice === 'b3') {
+                activeBank = [...bankLesson3];
+            } else if (choice === 'b4') {
+                activeBank = [...bankLesson4];
+            } else if (choice === 'all') {
+                activeBank = [...bankLesson1, ...bankLesson2, ...bankLesson3, ...bankLesson4];
+            }
+
+            const mcqs = activeBank.filter(d => d.type === 'mcq');
+            const tfs = activeBank.filter(d => d.type === 'tf');
+
+            const preparedMCQs = shuffle(mcqs).map(qObj => {
+                const shuffledOpts = shuffle(qObj.options);
+                return {
+                    ...qObj,
+                    options: shuffledOpts,
+                    correctIndex: shuffledOpts.indexOf(qObj.correctText),
+                    timeLimit: calculateQuestionTime(qObj)
+                };
+            });
+
+            const preparedTFs = shuffle(tfs).map(qObj => ({
+                ...qObj,
+                timeLimit: calculateQuestionTime(qObj)
+            }));
+
+            questions = shuffle([...preparedMCQs, ...preparedTFs]);
+
+            currentIndex = 0;
+            totalPoints = 0;
+            currentStreak = 0;
+            userHistory = [];
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+
+            document.getElementById('q-total').innerText = questions.length;
+            document.getElementById('score-display').innerText = '0';
+            updateStreakUI();
+
+            loadQuestion();
+        }
+
+        function updateStreakUI() {
+            const el = document.getElementById('streak-display');
+            el.innerText = `🔥 ${currentStreak}`;
+            if (currentStreak >= 2) {
+                el.classList.add('streak-active');
+            } else {
+                el.classList.remove('streak-active');
+            }
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+
+            const current = questions[currentIndex];
+            document.getElementById('q-number').innerText = currentIndex + 1;
+            document.getElementById('question-text').innerText = current.q;
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('submit-tf-btn').classList.add('hidden');
+
+            const mcqContainer = document.getElementById('options-container');
+            const tfContainer = document.getElementById('tf-container');
+
+            mcqContainer.innerHTML = '';
+            tfContainer.innerHTML = '';
+
+            if (current.type === 'mcq') {
+                document.getElementById('question-tag').innerText = "Trắc nghiệm chọn 1 đáp án";
+                mcqContainer.classList.remove('hidden');
+                tfContainer.classList.add('hidden');
+
+                const prefixes = ['A', 'B', 'C', 'D'];
+                current.options.forEach((optText, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.onclick = () => selectMCQOption(i);
+                    btn.innerHTML = `<span class="prefix">${prefixes[i]}.</span><span>${optText}</span>`;
+                    mcqContainer.appendChild(btn);
+                });
+            } else {
+                document.getElementById('question-tag').innerText = "Trắc nghiệm Đúng / Sai";
+                mcqContainer.classList.add('hidden');
+                tfContainer.classList.remove('hidden');
+
+                tfUserSelections = {};
+
+                current.subQuestions.forEach(sub => {
+                    const row = document.createElement('div');
+                    row.className = 'tf-row';
+                    row.id = `tf-row-${sub.id}`;
+                    row.innerHTML = `
+                        <div class="tf-text"><strong>${sub.id})</strong> ${sub.text}</div>
+                        <div class="tf-actions">
+                            <button class="tf-btn" id="btn-${sub.id}-true" onclick="selectTFChoice('${sub.id}', true)">Đúng</button>
+                            <button class="tf-btn" id="btn-${sub.id}-false" onclick="selectTFChoice('${sub.id}', false)">Sai</button>
+                        </div>
+                    `;
+                    tfContainer.appendChild(row);
+                });
+
+                document.getElementById('submit-tf-btn').classList.remove('hidden');
+            }
+
+            startTimer(current.timeLimit);
+        }
+
+        function selectTFChoice(subId, choice) {
+            tfUserSelections[subId] = choice;
+
+            const trueBtn = document.getElementById(`btn-${subId}-true`);
+            const falseBtn = document.getElementById(`btn-${subId}-false`);
+
+            if (choice === true) {
+                trueBtn.classList.add('selected-true');
+                falseBtn.classList.remove('selected-false');
+            } else {
+                falseBtn.classList.add('selected-false');
+                trueBtn.classList.remove('selected-true');
+            }
+        }
+
+        function startTimer(seconds) {
+            timeTotal = seconds;
+            timeRemaining = seconds;
+            updateTimerUI();
+
+            timerInterval = setInterval(() => {
+                timeRemaining -= 0.1;
+
+                if (timeRemaining <= 0) {
+                    timeRemaining = 0;
+                    updateTimerUI();
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                } else {
+                    updateTimerUI();
+                }
+            }, 100);
+        }
+
+        function updateTimerUI() {
+            const pct = Math.max(0, (timeRemaining / timeTotal) * 100);
+            const timerBar = document.getElementById('timer-bar');
+            timerBar.style.width = pct + '%';
+
+            const secsLeft = Math.ceil(timeRemaining);
+            document.getElementById('timer-text').innerText = secsLeft + 's';
+
+            if (pct > 50) {
+                timerBar.style.backgroundColor = 'var(--primary)';
+            } else if (pct > 20) {
+                timerBar.style.backgroundColor = 'var(--yellow)';
+            } else {
+                timerBar.style.backgroundColor = 'var(--red)';
+            }
+        }
+
+        function showScorePopup(earned, streakBonus) {
+            const pop = document.createElement('div');
+            pop.className = 'score-popup';
+            let txt = `+${earned} PTS`;
+            if (streakBonus > 0) {
+                txt += ` (🔥+${streakBonus})`;
+            }
+            pop.innerText = txt;
+            document.getElementById('popup-layer').appendChild(pop);
+            setTimeout(() => pop.remove(), 850);
+        }
+
+        function handleTimeout() {
+            const current = questions[currentIndex];
+
+            if (current.type === 'mcq') {
+                const buttons = document.querySelectorAll('.option-btn');
+                buttons.forEach(btn => btn.disabled = true);
+                buttons[current.correctIndex].classList.add('correct-choice');
+            } else {
+                document.getElementById('submit-tf-btn').classList.add('hidden');
+                document.querySelectorAll('.tf-btn').forEach(b => b.disabled = true);
+            }
+
+            currentStreak = 0;
+            updateStreakUI();
+
+            userHistory.push({
+                questionNumber: currentIndex + 1,
+                question: current.q,
+                type: current.type,
+                isCorrect: false,
+                isTimeout: true,
+                timeSpent: timeTotal,
+                pointsEarned: 0,
+                item: current
+            });
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function selectMCQOption(selectedIdx) {
+            clearInterval(timerInterval);
+
+            const current = questions[currentIndex];
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            const timeSpent = Math.max(0.1, timeTotal - timeRemaining);
+            const isCorrect = selectedIdx === current.correctIndex;
+            let earnedPoints = 0;
+            let streakBonus = 0;
+
+            if (isCorrect) {
+                const baseMax = 1000;
+                const ratio = Math.max(0, timeRemaining / timeTotal);
+                const rawSpeedPoints = Math.round(baseMax * ratio);
+                const speedPoints = Math.max(500, rawSpeedPoints);
+
+                currentStreak++;
+                streakBonus = (currentStreak > 1) ? (currentStreak - 1) * 100 : 0;
+                earnedPoints = speedPoints + streakBonus;
+
+                totalPoints += earnedPoints;
+                document.getElementById('score-display').innerText = totalPoints.toLocaleString();
+
+                buttons[selectedIdx].classList.add('correct-choice');
+                showScorePopup(speedPoints, streakBonus);
+            } else {
+                currentStreak = 0;
+                buttons[selectedIdx].classList.add('wrong-choice');
+                buttons[current.correctIndex].classList.add('correct-choice');
+            }
+
+            updateStreakUI();
+
+            userHistory.push({
+                questionNumber: currentIndex + 1,
+                question: current.q,
+                type: 'mcq',
+                selectedIdx: selectedIdx,
+                correctIndex: current.correctIndex,
+                isCorrect: isCorrect,
+                isTimeout: false,
+                timeSpent: timeSpent,
+                pointsEarned: earnedPoints,
+                item: current
+            });
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function submitTFAnswer() {
+            const current = questions[currentIndex];
+
+            if (Object.keys(tfUserSelections).length < current.subQuestions.length) {
+                alert("Vui lòng chọn Đúng hoặc Sai cho tất cả các ý!");
+                return;
+            }
+
+            clearInterval(timerInterval);
+
+            document.getElementById('submit-tf-btn').classList.add('hidden');
+            document.querySelectorAll('.tf-btn').forEach(b => b.disabled = true);
+
+            let allCorrect = true;
+            let subResults = {};
+
+            current.subQuestions.forEach(sub => {
+                const userVal = tfUserSelections[sub.id];
+                const isSubCorrect = (userVal === sub.answer);
+                subResults[sub.id] = { userVal, isSubCorrect, correctVal: sub.answer };
+
+                const row = document.getElementById(`tf-row-${sub.id}`);
+                if (isSubCorrect) {
+                    row.classList.add('correct-sub');
+                } else {
+                    row.classList.add('wrong-sub');
+                    allCorrect = false;
+                }
+            });
+
+            const timeSpent = Math.max(0.1, timeTotal - timeRemaining);
+            let earnedPoints = 0;
+            let streakBonus = 0;
+
+            if (allCorrect) {
+                const baseMax = 1200;
+                const ratio = Math.max(0, timeRemaining / timeTotal);
+                const rawSpeedPoints = Math.round(baseMax * ratio);
+                const speedPoints = Math.max(600, rawSpeedPoints);
+
+                currentStreak++;
+                streakBonus = (currentStreak > 1) ? (currentStreak - 1) * 100 : 0;
+                earnedPoints = speedPoints + streakBonus;
+
+                totalPoints += earnedPoints;
+                document.getElementById('score-display').innerText = totalPoints.toLocaleString();
+                showScorePopup(speedPoints, streakBonus);
+            } else {
+                currentStreak = 0;
+            }
+
+            updateStreakUI();
+
+            userHistory.push({
+                questionNumber: currentIndex + 1,
+                question: current.q,
+                type: 'tf',
+                isCorrect: allCorrect,
+                subResults: subResults,
+                isTimeout: false,
+                timeSpent: timeSpent,
+                pointsEarned: earnedPoints,
+                item: current
+            });
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const total = questions.length;
+            const correctCount = userHistory.filter(h => h.isCorrect).length;
+            const wrongCount = total - correctCount;
+            const pct = ((correctCount / total) * 100).toFixed(1);
+
+            const totalTimeSpent = userHistory.reduce((sum, h) => sum + h.timeSpent, 0);
+            const avgTime = (totalTimeSpent / total).toFixed(1);
+
+            document.getElementById('final-points').innerText = totalPoints.toLocaleString();
+            document.getElementById('final-pct').innerText = `${pct}%`;
+            document.getElementById('final-count').innerText = `${correctCount} / ${wrongCount}`;
+            document.getElementById('final-avg-time').innerText = `${avgTime}s`;
+
+            renderSortedReview();
+        }
+
+        function renderSortedReview() {
+            const container = document.getElementById('review-list');
+            container.innerHTML = '';
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            const wrongGroup = userHistory.filter(h => !h.isCorrect);
+            const correctGroup = userHistory.filter(h => h.isCorrect);
+
+            if (wrongGroup.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'review-group-title title-wrong-group';
+                header.innerText = `⚠️ CẦN ÔN LẠI (${wrongGroup.length} câu sai / chưa hoàn chỉnh)`;
+                container.appendChild(header);
+
+                wrongGroup.forEach(item => container.appendChild(createReviewCard(item, prefixes)));
+            }
+
+            if (correctGroup.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'review-group-title title-correct-group';
+                header.innerText = `✅ CÂU ĐÃ TRẢ LỜI ĐÚNG HOÀN TOÀN (${correctGroup.length} câu)`;
+                container.appendChild(header);
+
+                correctGroup.forEach(item => container.appendChild(createReviewCard(item, prefixes)));
+            }
+        }
+
+        function createReviewCard(item, prefixes) {
+            const div = document.createElement('div');
+            div.className = 'review-item';
+
+            let statusBadge = "";
+            if (item.isTimeout) {
+                statusBadge = `<span class="review-status status-timeout">Hết Giờ</span>`;
+            } else if (item.isCorrect) {
+                statusBadge = `<span class="review-status status-correct">Đúng (+${item.pointsEarned} pt)</span>`;
+            } else {
+                statusBadge = `<span class="review-status status-wrong">Sai</span>`;
+            }
+
+            let bodyContent = "";
+
+            if (item.type === 'mcq') {
+                bodyContent = item.item.options.map((opt, oIdx) => {
+                    const isCorrect = oIdx === item.correctIndex;
+                    const isChosen = oIdx === item.selectedIdx;
+
+                    let classes = "review-opt";
+                    let label = "";
+
+                    if (isCorrect) {
+                        classes += " is-correct-green";
+                        label = " (Đáp án đúng)";
+                    } else if (isChosen) {
+                        classes += " is-wrong-red";
+                        label = " (Bạn chọn sai)";
+                    }
+
+                    return `<div class="${classes}">${prefixes[oIdx]}. ${opt}${label}</div>`;
+                }).join('');
+            } else {
+                bodyContent = item.item.subQuestions.map(sub => {
+                    const ansText = sub.answer ? "ĐÚNG" : "SAI";
+                    return `<div class="review-opt"><strong>${sub.id})</strong> ${sub.text} &rarr; <strong>Đáp án: ${ansText}</strong></div>`;
+                }).join('');
+            }
+
+            div.innerHTML = `
+                <div>${statusBadge}</div>
+                <div class="review-q">Câu ${item.questionNumber}: ${item.question}</div>
+                ${bodyContent}
+            `;
+            return div;
+        }
+
+        function toggleReview() {
+            const rev = document.getElementById('review-container');
+            rev.classList.toggle('hidden');
+        }
+
+        initTheme();
+    </script>
+</body>
+</html>
